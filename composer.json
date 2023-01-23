@@ -5,7 +5,8 @@
     "minimum-stability": "alpha",
     "keywords": [
         "infinity",
-        "php-sdk"
+        "php-sdk",
+        "guzzle"
     ],
     "homepage": "http://designanddevelop.io",
     "license": "MIT",
