@@ -6,7 +6,7 @@ This is the first version of a community sponsored PHP SDK client for Infinity A
 
 ## API version support
 
-This client **only** supports Infinity's API v1.  Please see their [API documentation](https://startinfinity.com/help/1.0/integrations/api) for more information.
+This client **only** supports Infinity's API v2.  Please see their [API documentation](https://startinfinity.com/help/1.0/integrations/api) for more information.
 
 ## Requirements
 * PHP 8.1+
@@ -43,31 +43,29 @@ $client->setAuth('bearer', ['bearer' => $bearer]);
 ### Basic Operations
 
 ``` php
-// Get all servers
-$servers = $client->servers()->getAll();
-print_r($servers);
+// Get all boards
+$boards = $client->boards()->getAll();
+print_r($boards);
 
-// Create a new server
-$newServer = $client->servers()->create([
-    'servername' => 'hal9000',                          
-    'ip' => '199.199.199.199',                        
-    'datacenter' => 'space-station-v',                     
-    'webserver' => 'nginx',      
-    'database' => 'percona'
+// Create a new board
+$newBoard = $client->boards()->create([
+    'name' => 'Blah Blah',                          
+    'description' => 'Bler bleman blope',                     
+    'user_ids' => [1234, 1235, 12346],      
 ]);
-print_r($newServer);
+print_r($newBoard);
 
-// Update a server
-$client->servers()->update(12345,[
-    'security_updates_reboot_time' => '04:00'
+// Update an item
+$client->boards('PWefUeHA8Pd')->items('364019f5-0198-407b-931a-4f8ea51ecc28')->update(',[
+    'folder_id' => 'U7MjUC5jNpM'
 ]);
 
-// Delete a server
-$client->servers()->delete(12345);
+// Delete an item value
+$client->boards('PWefUeHA8Pd')->items(''364019f5-0198-407b-931a-4f8ea51ecc28'')->values()->delete('8b9fee67-600c-499f-ab19-04bd9092be4e');
 
-// Get all sites
-$sites = $client->sites()->getAll();
-print_r($sites);
+// Get all workspaces
+$workspaces = $client->workspaces()->getAll();
+print_r($workspaces);
 ```
 
 ## Discovering Methods & Classes
@@ -78,51 +76,48 @@ $client->getValidSubResrouces()
 
 // The above example will output something like:
 [
-    "backups" => "Infinity\Api\Resources\Core\Backups",
-    "bundle" => "Infinity\Api\Resources\Core\Bundle",
-    "domain" => "Infinity\Api\Resources\Core\Domain",
-    "server" => "Infinity\Api\Resources\Core\Server",
-    "site" => "Infinity\Api\Resources\Core\Site",
-    "systemUser" => "Infinity\Api\Resources\Core\SystemUser",
-    "teams" => "Infinity\Api\Resources\Core\Teams",
-    "user" => "Infinity\Api\Resources\Core\User",
+    "boards" => "Infinity\Api\Resources\Core\Boards",
+    "profile" => "Infinity\Api\Resources\Core\Profile",
+    "attachments" => "Infinity\Api\Resources\Core\Attachments",
+    "users" => "Infinity\Api\Resources\Core\Users",
+    "workspaces" => "Infinity\Api\Resources\Core\Workspaces",
 ]
 
+// Most available subresources are on the boards class, accessible by:
+$client->boards()->getValidSubResources()
+
 // These are methods/classes that can be chained to the client. For instance:
-// For instance, "backups" => "Infinity\Api\Resources\Core\Backups", can be used as $client->backups()
+// For instance, "boards" => "Infinity\Api\Resources\Core\Boards", can be used as $client->boards()
 
 // To find the chained methods available to the class, now do:
-$client->site()->getRoutes()
+$client->boards()->getRoutes()
 
 // The above example will output something like:
 [
-    "getAll" => "site",
-    "get" => "site/{id}",
-    "create" => "site",
-    "update" => "site/{id}",
-    "runCLICommand" => "site/run-wp-cli/{id}",
-    "addWPUser" => "site/add-wp-user/{id}",
-    "delete" => "site",
-    "deleteByID" => "site/{id}",
+    "getAll" => "boards",
+    "get" => "board/{id}",
+    "create" => "boards",
 ]
 
 // Those routes can be compared with the Infinity documentation routes and run as chained methods such as the below command to get all sites:
-$client->site()->getAll()
+$client->boards()->getAll()
 ```
 
 ### Pagination
 
-The Infinity API offers a way to get the next pages for the requests and is documented in [the Infinity Developer Documentation](https://developer.zendesk.com/rest_api/docs/core/introduction#pagination).
+The Infinity API offers a way to get the next pages for the requests and is documented in [the Infinity Developer Documentation](https://s3.amazonaws.com/devdocs.startinfinity.com/index.html#items-GETapi-v2-workspaces--workspace--boards--board_id--items).
 
 The way to do this is to pass it as an option to your request.
 
 ``` php
-$servers = $this->client->servers()->getAll(['per_page' => 100, 'page' => 2]);
+$boards = $this->client->boards('PWefUeHA8Pd')->items()->getAll(['after' => '8b9fee67-600c-499f-ab19-04bd9092be4e', 'sort_by' => 'created_at', 'limit' => 100]);
 ```
 
-The allowed options are
-* per_page
-* page
+Some of the allowed options include
+* sort_by
+* after
+* before
+* limit
 
 ### Retrying Requests
 
@@ -149,7 +144,7 @@ Pull Requests are always welcome. I'll catch-up and develop the contribution gui
 
 ## Copyright and license
 
-Copyright 2013-present Infinity
+Copyright 2023-present Infinity
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -157,4 +152,3 @@ You may obtain a copy of the License at
 http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-

@@ -67,12 +67,11 @@ abstract class ResourceAbstract
      */
     public function __construct(HttpClient $client, $apiBasePath = 'api/v2/')
     {
-        $this->apiBasePath = $apiBasePath;
-
-        if ( $this->includeWorkspace ) {
-            $apiBasePath .= "workspaces/{$this->client->getWorkspace()}/";
+        if ($this->includeWorkspace) {
+            $apiBasePath .= "workspaces/{$client->getWorkspace()}/";
         }
 
+        $this->apiBasePath = $apiBasePath;
         $this->client = $client;
         $this->client->setApiBasePath($this->apiBasePath);
         $inflector = new Inflector(
