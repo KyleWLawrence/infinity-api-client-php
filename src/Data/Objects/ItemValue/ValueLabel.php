@@ -1,11 +1,11 @@
 <?php
 
-namespace KyleWLawrence\Infinity\Data;
+namespace KyleWLawrence\Infinity\Data\Objects\ItemValue;
 
 use KyleWLawrence\Infinity\Data\Traits\GetData;
 use KyleWLawrence\Infinity\Data\Traits\SetData;
 
-class ValueLabel extends ItemValueBase
+class ValueLabel extends ValueBase
 {
     use SetData;
     use GetData;
