@@ -32,8 +32,9 @@
     },
     "autoload": {
         "psr-4": {
-            "Infinity\\Api\\": "src/api",
-            "Infinity\\Console\\": "src/console"
+            "KyleWLawrence\\Infinity\\Api\\": "src/Api",
+            "KyleWLawrence\\Infinity\\Data\\": "src/Data",
+            "KyleWLawrence\\Infinity\\Console\\": "src/Console"
         }
     }
 }
