@@ -16,7 +16,7 @@ class Attribute extends ObjectBase
 
     protected array $folders;
 
-    public protected array $dataType = [
+    public array $dataType = [
         'checkbox' => 'bool',
         'created_at' => 'string',
         'created_by' => 'int',

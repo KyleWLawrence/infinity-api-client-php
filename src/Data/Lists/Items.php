@@ -3,6 +3,7 @@
 namespace KyleWLawrence\Infinity\Data\Lists;
 
 use Exception;
+use KyleWLawrence\Infinity\Services\InfinityService;
 
 class Items extends ListBase
 {
@@ -10,18 +11,18 @@ class Items extends ListBase
 
     public function __construct(
         array $apiObjects,
-        public readonly string $board_id,
+        string $board_id,
         array|object $attributes = null,
         protected $client = new InfinityService(),
     ) {
         if (! is_null($attributes)) {
             $this->has_atts = true;
-            $apiObjects = $this->assignAttributes($apiObjects, $atts);
-        } elseif (isset($apiObjects->values[0]->attribute)) {
+            $apiObjects = $this->assignAttributes($apiObjects, $attributes);
+        } elseif (isset($apiObjects[0]->values[0]->attribute)) {
             $this->has_atts = true;
         }
 
-        $this->setObjects($apiObjects);
+        parent::__construct($apiObjects, $board_id);
     }
 
     public function findItemByData(array|bool|string $data, string $aid): object

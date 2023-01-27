@@ -28,7 +28,7 @@ class ObjectBase
 
     public readonly string $parentId;
 
-    protected string $updated = false;
+    protected bool $updated = false;
 
     //-----------------------------------------------------------------------------------
     //    General
@@ -36,7 +36,7 @@ class ObjectBase
 
     public function __construct(
         protected object $apiObject,
-        public readonly ?string $boardId = null,
+        public readonly string $board_id,
     ) {
         $this->setObjectVars($apiObject);
 

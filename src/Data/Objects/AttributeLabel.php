@@ -10,9 +10,9 @@ class AttributeLabel extends Attribute
 
     public function __construct(
         protected object $apiObject,
-        public readonly ?string $boardId = null,
+        string $board_id,
     ) {
-        parent::__construct($apiObject);
+        parent::__construct($apiObject, $board_id);
 
         $this->label_map = array_combine(array_column($this->settings->labels, 'id'), array_column($this->settings->labels, 'name'));
     }
