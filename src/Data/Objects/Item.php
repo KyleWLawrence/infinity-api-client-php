@@ -19,7 +19,7 @@ class Item extends ObjectBase
 
     public $has_atts = false;
 
-    protected array $attributes = [];
+    public array $attributes = [];
 
     public function getValues(): array
     {

@@ -12,7 +12,7 @@ class Items extends ListBase
     public function __construct(
         array $apiObjects,
         string $board_id,
-        array|object $attributes = null,
+        ?array $attributes,
         protected $client = new InfinityService(),
     ) {
         if (! is_null($attributes)) {
@@ -85,7 +85,7 @@ class Items extends ListBase
 
         foreach ($apiObjects as &$item) {
             $item->hasAtts = true;
-            $item->getAttributes() = $atts;
+            $item->attributes = $atts;
             $item->getValues() = $this->assignAttsToValues($item->getValues(), $atts);
         }
 
@@ -100,7 +100,7 @@ class Items extends ListBase
                 throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
             }
 
-            $val->getAttribute() = $atts[$aid];
+            $val->attribute = $atts[$aid];
         }
 
         return $values;
