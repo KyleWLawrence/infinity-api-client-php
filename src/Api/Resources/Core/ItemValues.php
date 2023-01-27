@@ -28,8 +28,8 @@ class ItemValues extends ResourceAbstract
     public function getAdditionalRouteParams(): array
     {
         $boardParam = [
-            'board_id' => reset($this->getLatestChaiendParameter()),
-            'item_id' => reset($this->getLatestChaiendParameter(['Infinity\Api\Resources\Core\Items'])),
+            'board_id' => reset($this->getLatestChainedParameter()),
+            'item_id' => reset($this->getLatestChainedParameter(['Infinity\Api\Resources\Core\Items'])),
         ];
 
         return array_merge($boardParam, $this->additionalRouteParams);

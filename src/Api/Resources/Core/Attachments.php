@@ -4,9 +4,9 @@ namespace KyleWLawrence\Infinity\Api\Resources\Core;
 
 use KyleWLawrence\Infinity\Api\Exceptions\CustomException;
 use KyleWLawrence\Infinity\Api\Exceptions\MissingParametersException;
+use KyleWLawrence\Infinity\Api\Http;
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
 use Psr\Http\Message\StreamInterface;
-use KyleWLawrence\Infinity\Api\Http;
 
 /**
  * The Attachments class exposes key methods for getting the current profile
@@ -29,7 +29,7 @@ class Attachments extends ResourceAbstract
      */
     public function getAdditionalRouteParams(): array
     {
-        $boardParam = ['board_id' => reset($this->getLatestChaiendParameter())];
+        $boardParam = ['board_id' => reset($this->getLatestChainedParameter())];
 
         return array_merge($boardParam, $this->additionalRouteParams);
     }
