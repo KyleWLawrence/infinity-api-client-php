@@ -10,6 +10,12 @@ use Ramsey\Uuid\Uuid;
 
 class ObjectBase
 {
+    public readonly string|bool|array|null $default_data;
+
+    public readonly float $sort_order;
+
+    public readonly string $type;
+
     public readonly string $id;
 
     public readonly string $object;

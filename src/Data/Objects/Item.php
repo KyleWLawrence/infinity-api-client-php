@@ -9,19 +9,27 @@ use KyleWLawrence\Infinity\Data\Objects\ItemValue\ValueLink;
 
 class Item extends ObjectBase
 {
-    public readonly float $sort_order;
-
     public string $nameId;
 
     protected string $folder_id;
 
-    protected string $parent_id;
+    protected ?string $parent_id;
 
     protected array $values;
 
     public $has_atts = false;
 
     protected array $attributes = [];
+
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
 
     protected function setObjectVars(object $apiObject): void
     {
@@ -124,7 +132,7 @@ class Item extends ObjectBase
         }
     }
 
-    public function genValue(string $aid, ?mixed $data, ?string $type): object
+    public function genValue(string $aid, mixed $data, ?string $type): object
     {
         $val = (object) [
             'object' => 'value',

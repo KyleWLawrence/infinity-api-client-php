@@ -18,7 +18,7 @@ class Items extends ListBase
         if (! is_null($attributes)) {
             $this->has_atts = true;
             $apiObjects = $this->assignAttributes($apiObjects, $attributes);
-        } elseif (isset($apiObjects[0]->values[0]->attribute)) {
+        } elseif (isset($apiObjects[0]->getValues()[0]->attribute)) {
             $this->has_atts = true;
         }
 
@@ -38,16 +38,16 @@ class Items extends ListBase
     public function findItemsByData(array|bool|string $data, string $aid): array
     {
         return array_filter($this->list, function ($item) use ($data, $aid) {
-            $matches = array_column($item->values, 'attribute_id');
+            $matches = array_column($item->getValues(), 'attribute_id');
             $hasAid = array_keys($matches, $aid);
 
             foreach ($hasAid as $key) {
-                if (is_array($item->values[$key]->data)) {
-                    if (in_array($data, $item->values[$key]->data)) {
+                if (is_array($item->getValues()[$key]->data)) {
+                    if (in_array($data, $item->getValues()[$key]->data)) {
                         return true;
                     }
                 } else {
-                    if ($item->values[$key]->data === $data) {
+                    if ($item->getValues()[$key]->data === $data) {
                         return true;
                     }
                 }
@@ -63,7 +63,7 @@ class Items extends ListBase
             throw new Exception(__FUNCTION__." requires the item list to has_atts to find label $name on aid ($aid)");
         }
 
-        $atts = reset($this->list)->attributes;
+        $atts = reset($this->list)->getAttributes();
         $attKey = array_search($aid, array_column($atts, 'id'));
         if (! is_int($attKey)) {
             throw new Exception("Unable to find attribute for $aid");
@@ -85,8 +85,8 @@ class Items extends ListBase
 
         foreach ($apiObjects as &$item) {
             $item->hasAtts = true;
-            $item->attributes = $atts;
-            $item->values = $this->assignAttsToValues($item->values, $atts);
+            $item->getAttributes() = $atts;
+            $item->getValues() = $this->assignAttsToValues($item->getValues(), $atts);
         }
 
         return $apiObjects;
@@ -100,7 +100,7 @@ class Items extends ListBase
                 throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
             }
 
-            $val->attribute = $atts[$aid];
+            $val->getAttribute() = $atts[$aid];
         }
 
         return $values;

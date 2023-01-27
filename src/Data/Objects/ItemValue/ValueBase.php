@@ -16,11 +16,11 @@ class ValueBase
 
     public readonly bool $deleted;
 
-    public readonly string $data_type = 'string';
+    public string $data_type = 'string';
 
-    public readonly string|bool|array $empty_data = '';
+    public string|bool|array $empty_data = '';
 
-    protected object $attribute;
+    public object $attribute;
 
     protected string|array|bool $data;
 

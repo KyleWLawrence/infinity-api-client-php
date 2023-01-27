@@ -4,7 +4,7 @@ namespace KyleWLawrence\Infinity\Data\Objects\ItemValue;
 
 class ValueLabel extends ValueBase
 {
-    public readonly string|bool|array $empty_data = [];
+    public string|bool|array $empty_data = [];
 
     public function setData(mixed $data): object
     {

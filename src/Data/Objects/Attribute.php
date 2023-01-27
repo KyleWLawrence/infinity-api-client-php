@@ -6,8 +6,6 @@ use Infinity;
 
 class Attribute extends ObjectBase
 {
-    public readonly string $type;
-
     public string $name;
 
     protected object $settings;

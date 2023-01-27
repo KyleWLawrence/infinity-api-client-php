@@ -6,7 +6,7 @@ use Exception;
 
 class ValueLink extends ValueBase
 {
-    public readonly string|bool|array $empty_data = [];
+    public string|bool|array $empty_data = [];
 
     public function removeLinkById(string $id): object
     {
