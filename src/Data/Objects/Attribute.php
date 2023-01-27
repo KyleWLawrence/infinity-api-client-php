@@ -2,7 +2,6 @@
 
 namespace KyleWLawrence\Infinity\Data\Objects;
 
-use Exception;
 use Infinity;
 
 class Attribute extends ObjectBase

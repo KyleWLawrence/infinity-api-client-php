@@ -26,7 +26,7 @@ class ValueBase
 
     public function __construct(
         protected object $apiObject,
-    ): void {
+    ) {
         $this->setObjectVars($apiObject);
     }
 

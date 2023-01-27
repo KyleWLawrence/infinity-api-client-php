@@ -37,7 +37,7 @@ class ObjectBase
     public function __construct(
         protected object $apiObject,
         public readonly ?string $boardId = null,
-    ): void {
+    ) {
         $this->setObjectVars($apiObject);
 
         $inflector = new Inflector(
