@@ -29,6 +29,7 @@ class Views extends ResourceAbstract
     {
         $this->setRoutes(
             [
+                'getAllLoop' => 'boards/{board_id}/views',
                 'getAll' => 'boards/{board_id}/views',
                 'get' => 'boards/{board_id}/views/{id}',
                 'create' => 'boards/{board_id}/views',

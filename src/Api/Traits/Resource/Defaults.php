@@ -9,6 +9,7 @@ trait Defaults
 {
     use Get;
     use GetAll;
+    use GetAllLoop;
     use Delete;
     use Create;
     use Update;

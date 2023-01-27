@@ -34,7 +34,7 @@ class Item extends ObjectBase
                 $val = $this->convertInfValObj($val, $val->attribute->type);
 
                 if (! isset($this->attributes[$val->attribute->id])) {
-                    $this->attributes[] = $val->attribute;
+                    $this->attributes[$val->attribute->id] = $val->attribute;
                 }
             }
         }
@@ -55,6 +55,21 @@ class Item extends ObjectBase
         }
 
         return $val;
+    }
+
+    public function isUpdated(): bool
+    {
+        if ($this->updated === true) {
+            return true;
+        }
+
+        foreach ($this->values as $val) {
+            if ($val->isUpdated()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getFolderId(): string
@@ -92,7 +107,7 @@ class Item extends ObjectBase
     {
         $set = [];
         foreach ($this->values as $val) {
-            if (empty($val->data) && isset($val->id) && is_string($val->id)) {
+            if (empty($val->data) && isset($val->id) && $this->isValidId($val->id)) {
                 $set[] = $val->id;
             }
         }
@@ -109,10 +124,9 @@ class Item extends ObjectBase
         }
     }
 
-    public function genValue(mixed $data, string $aid, ?string $type): string
+    public function genValue(string $aid, ?mixed $data, ?string $type): object
     {
         $val = (object) [
-            'id' => $this->generateId(),
             'object' => 'value',
             'data' => $data,
             'attribute_id' => $aid,
@@ -120,48 +134,41 @@ class Item extends ObjectBase
             'deleted' => false,
         ];
 
+        if (isset($data) && $data !== null && ! empty($data) && $data !== false) {
+            $val->id = $this->generateId();
+            $this->updated = true;
+        }
+
         if (isset($this->attributes[$aid])) {
             $val->attribute = $this->attributes[$aid];
+            $type = $this->attributes[$aid]->type;
         } elseif (is_null($type)) {
             throw new Exception("Unable to find value with attribute_id ($aid) and no type provide to generate");
         }
 
-        $this->updated = true;
-        $this->values[] = $val;
+        $obj = $this->convertInfValObj($val, $type);
+        $this->values[] = &$obj;
 
-        return $val->id;
+        return $obj;
     }
 
-    public function setDataByAid(mixed $data, string $aid, ?string $type): string
+    public function getValue(string $id): object
+    {
+        $valMatch = array_search($id, array_column($this->values, 'id'));
+        if (! is_int($valMatch)) {
+            throw new Exception("Unable to find value with id ($id)");
+        }
+
+        return $this->values[$valMatch];
+    }
+
+    public function getValueByAid(string $aid, ?string $type): object
     {
         $valMatch = array_search($aid, array_column($this->values, 'attribute_id'));
-        if (! is_int($valMatch === false)) {
-            $id = $this->genValue($data, $aid, $type);
-        } else {
-            $this->values[$valMatch] = $this->setValueData($this->values[$valMatch], $data);
-            $id = $this->values[$valMatch]->id;
+        if (! is_int($valMatch)) {
+            return $this->genValue($aid, null, $type);
         }
 
-        return $id;
-    }
-
-    public function getDataByAid(string $aid): mixed
-    {
-        $valMatch = array_search($aid, array_column($this->values, 'attribute_id'));
-        if (! is_int($valMatch === false)) {
-            return;
-        }
-
-        return $this->values[$valMatch]->data;
-    }
-
-    public function setValueData(object $value, mixed $data): object
-    {
-        if ($value->data !== $data) {
-            $value->data = $data;
-            $this->updated = true;
-        }
-
-        return $value;
+        return $this->values[$valMatch];
     }
 }

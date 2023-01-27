@@ -24,6 +24,16 @@ class Items extends ListBase
         $this->setObjects($apiObjects);
     }
 
+    public function findItemByData(array|bool|string $data, string $aid): object
+    {
+        $items = $this->findItemsByData($data, $aid);
+        if (count($items) > 1) {
+            throw new Exception('Found '.count($items).' items when expected to find one for data '.print_r($data, true).' and \$aid '.$aid);
+        }
+
+        return reset($items);
+    }
+
     public function findItemsByData(array|bool|string $data, string $aid): array
     {
         return array_filter($this->list, function ($item) use ($data, $aid) {

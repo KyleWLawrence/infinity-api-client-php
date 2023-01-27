@@ -29,6 +29,7 @@ class Folders extends ResourceAbstract
     {
         $this->setRoutes(
             [
+                'getAllLoop' => 'boards/{board_id}/folders',
                 'getAll' => 'boards/{board_id}/folders',
                 'get' => 'boards/{board_id}/folders/{id}',
                 'create' => 'boards/{board_id}/folders',

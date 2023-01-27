@@ -16,6 +16,10 @@ class ValueBase
 
     public readonly bool $deleted;
 
+    public readonly string $data_type = 'string';
+
+    public readonly string|bool|array $empty_data = '';
+
     protected object $attribute;
 
     protected string|array|bool $data;
@@ -45,8 +49,34 @@ class ValueBase
         return $this->data;
     }
 
-    public function setData($data)
+    protected function setVar(string $key, $val): object
     {
-        $this->data = $data;
+        if ($this->$key !== $val) {
+            $this->$key = $val;
+            $this->updated = true;
+        }
+
+        return $this;
+    }
+
+    public function setData(mixed $data): object
+    {
+        return $this->setVar('data', $data);
+    }
+
+    public function hasData(mixed $data): bool
+    {
+        if (is_array($data)) {
+            return (count(array_diff($data, $this->data)) > 0) ? false : true;
+        } else {
+            return ($data === $this->data) ? true : false;
+        }
+    }
+
+    public function deleteData(): object
+    {
+        $this->setData($this->empty_data);
+
+        return $this;
     }
 }

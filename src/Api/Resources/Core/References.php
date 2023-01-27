@@ -29,6 +29,7 @@ class References extends ResourceAbstract
     {
         $this->setRoutes(
             [
+                'getAllLoop' => 'boards/{board_id}/references',
                 'getAll' => 'boards/{board_id}/references',
                 'get' => 'boards/{board_id}/references/{id}',
                 'create' => 'boards/{board_id}/references',

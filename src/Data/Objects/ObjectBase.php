@@ -28,7 +28,7 @@ class ObjectBase
 
     public readonly string $parentId;
 
-    public string $updated = false;
+    protected string $updated = false;
 
     //-----------------------------------------------------------------------------------
     //    General
@@ -86,6 +86,11 @@ class ObjectBase
     public function isValidId(string $val): bool
     {
         return Uuid::isValid($val);
+    }
+
+    public function isUpdated(): bool
+    {
+        return $this->updated;
     }
 
     /**

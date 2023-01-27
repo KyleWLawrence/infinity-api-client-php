@@ -45,7 +45,7 @@ class ListBase implements \ArrayAccess
         unset($this->list[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return isset($this->list[$offset]) ? $this->list[$offset] : null;
     }

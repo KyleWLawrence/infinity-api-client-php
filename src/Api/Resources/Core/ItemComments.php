@@ -42,6 +42,7 @@ class ItemComments extends ResourceAbstract
     {
         $this->setRoutes(
             [
+                'getAllLoop' => 'boards/{board_id}/items/{item_id}/comments',
                 'getAll' => 'boards/{board_id}/items/{item_id}/comments',
                 'get' => 'boards/{board_id}/items/{item_id}/comments/{id}',
                 'create' => 'boards/{board_id}/items/{item_id}/comments',

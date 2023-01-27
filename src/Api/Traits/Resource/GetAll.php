@@ -18,7 +18,7 @@ trait GetAll
      */
     public function getAll(array $params = [], $routeKey = __FUNCTION__)
     {
-        $params = array_merge(['per_page' => 100], $params);
+        $params = array_merge(['limit' => 100], $params);
 
         try {
             $route = $this->getRoute($routeKey, $params);

@@ -29,6 +29,7 @@ class Attributes extends ResourceAbstract
     {
         $this->setRoutes(
             [
+                'getAllLoop' => 'boards/{board_id}/attributes',
                 'getAll' => 'boards/{board_id}/attributes',
                 'get' => 'boards/{board_id}/attributes/{id}',
                 'create' => 'boards/{board_id}/attributes',

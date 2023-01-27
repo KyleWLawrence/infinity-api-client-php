@@ -15,6 +15,7 @@ class Workspaces extends ResourceAbstract
 {
     use InstantiatorTrait;
     use GetAll;
+    use GetAllLoop;
 
     /**
      * @var bool
@@ -38,6 +39,7 @@ class Workspaces extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
+            'getAllLoop' => 'workspaces',
             'getAll' => 'workspaces',
         ]);
     }

@@ -2,76 +2,84 @@
 
 namespace KyleWLawrence\Infinity\Data\Objects\ItemValue;
 
-use KyleWLawrence\Infinity\Data\Traits\GetData;
-use KyleWLawrence\Infinity\Data\Traits\SetData;
-
 class ValueLabel extends ValueBase
 {
-    use SetData;
-    use GetData;
+    public readonly string|bool|array $empty_data = [];
 
-    public function genLink(string $url, string $name = '', string $favicon = ''): object
+    public function setData(mixed $data): object
     {
-        // Cosider adding function to automatically retrieve favicon
-        $link = (object) [
-            'id' => $this->generateId(),
-            'url' => $url,
-            'name' => $name,
-            'favicon' => $favicon,
-        ];
+        $data = array_unique($data);
 
-        $this->data[] = $link;
-
-        return $link;
+        return $this->setVar('data', $data);
     }
 
-    public function getLinkObjByUrl(string $url): ?object
+    public function hasLabelName(string $name, object $att): bool
     {
-        $valMatch = array_search($url, array_column($this->data, 'url'));
+        $id = $att->getLabelId($name, false);
 
-        if (is_int($valMatch)) {
-            return $this->data[$valMatch];
-        } else {
-            return;
+        return ($id && $this->hasData($id)) ? true : false;
+    }
+
+    public function hasLabelId(string $id): bool
+    {
+        return ($this->hasData($id)) ? true : false;
+    }
+
+    public function addLabelName(string $name, object $att): object
+    {
+        $id = $att->getLabelId($name, true);
+
+        return $this->addLabelId($id);
+    }
+
+    public function addLabelNames(array $names, object $att): object
+    {
+        foreach ($names as $name) {
+            $this->addLabelName($name, $att);
         }
+
+        return $this;
     }
 
-    public function getLinkNameByUrl(string $url): ?string
+    public function removeLabelName(string $name, object $att): object
     {
-        $object = $this->getLinkObjByUrl($url);
+        $id = $att->getLabelId($name, true);
 
-        return ($object) ? $object->name : null;
+        return $this->removeLabelId($id);
     }
 
-    public function getLinkIdByUrl(string $url): ?string
+    public function removeLabelNames(array $names, object $att): object
     {
-        $object = $this->getLinkObjByUrl($url);
-
-        return ($object) ? $object->id : null;
-    }
-
-    public function getOrAddLink(string $url, string $name = '', string $favicon = ''): object
-    {
-        $object = $this->getLinkObjByUrl($url);
-
-        if (! is_object($object)) {
-            return $this->genLink($url, $name, $favicon);
-        } else {
-            return $object;
+        foreach ($names as $name) {
+            $this->removeLabelName($name, $att);
         }
+
+        return $this;
     }
 
-    public function updateOrAddLink(string $url, string $name = '', string $favicon = ''): object
+    public function setLabelName(string $name, object $att): object
     {
-        $object = $this->getLinkObjByUrl($url);
+        $id = $att->getLabelId($name, true);
 
-        if (! is_object($object)) {
-            return $this->genLink($url, $name, $favicon);
-        } elseif ($object->name !== $name) {
-            $object->name = $name;
-            $this->setData($object);
+        return $this->setLabelId($id);
+    }
 
-            return $object;
-        }
+    public function removeLabelId(string $id): object
+    {
+        $val = array_diff($this->data, [$id]);
+
+        return $this->setData($val);
+    }
+
+    public function addLabelId(string $id): object
+    {
+        $val = array_merge($this->data, $id);
+
+        return $this->setData($val);
+    }
+
+    public function setLabelId(string $id): object
+    {
+        return $this->setData([$id]);
     }
 }

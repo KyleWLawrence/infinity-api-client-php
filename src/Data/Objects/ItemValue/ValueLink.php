@@ -2,13 +2,68 @@
 
 namespace KyleWLawrence\Infinity\Data\Objects\ItemValue;
 
-use KyleWLawrence\Infinity\Data\Traits\GetData;
-use KyleWLawrence\Infinity\Data\Traits\SetData;
+use Exception;
 
 class ValueLink extends ValueBase
 {
-    use SetData;
-    use GetData;
+    public readonly string|bool|array $empty_data = [];
+
+    public function removeLinkById(string $id): object
+    {
+        $valMatch = array_search($id, array_column($this->data, 'id'));
+
+        if (is_int($valMatch)) {
+            unset($this->data[$valMatch]);
+
+            return $this;
+        } else {
+            throw new Exception("Unable to find link \$value for $id from item #{$this->item_id}");
+        }
+    }
+
+    public function removeLinkByUrl(string $url): object
+    {
+        $valMatch = array_search($url, array_column($this->data, 'url'));
+
+        if (is_int($valMatch)) {
+            unset($this->data[$valMatch]);
+        }
+
+        return $this;
+    }
+
+    public function deleteData(): object
+    {
+        return $this->setData([]);
+    }
+
+    public function getLinkById(string $id): object
+    {
+        $valMatch = array_search($id, array_column($this->data, 'id'));
+
+        if (is_int($valMatch)) {
+            return $this->data[$valMatch];
+        } else {
+            throw new Exception("Unable to find link \$value for $id from item #{$this->item_id}");
+        }
+    }
+
+    public function setLink(mixed $data): object
+    {
+        $valMatch = array_search($data->id, array_column($this->data, 'id'));
+
+        if (is_int($valMatch)) {
+            if ($this->data[$valMatch] !== $data) {
+                $this->updated = true;
+                $this->data[$valMatch] = $data;
+            }
+        } else {
+            $this->updated = true;
+            $this->data[] = $data;
+        }
+
+        return $this;
+    }
 
     public function genLink(string $url, string $name = '', string $favicon = ''): object
     {
@@ -20,6 +75,7 @@ class ValueLink extends ValueBase
             'favicon' => $favicon,
         ];
 
+        $this->updated = true;
         $this->data[] = $link;
 
         return $link;
@@ -66,12 +122,12 @@ class ValueLink extends ValueBase
         $object = $this->getLinkObjByUrl($url);
 
         if (! is_object($object)) {
-            return $this->genLink($url, $name, $favicon);
+            $this->genLink($url, $name, $favicon);
         } elseif ($object->name !== $name) {
             $object->name = $name;
-            $this->setData($object);
-
-            return $object;
+            $this->setLink($object);
         }
+
+        return $this;
     }
 }
