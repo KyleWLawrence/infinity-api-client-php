@@ -12,13 +12,13 @@ class Items extends ListBase
     public function __construct(
         array $apiObjects,
         string $board_id,
-        ?array $attributes,
+        ?array $attributes = null,
         protected $client = new InfinityService(),
     ) {
         if (! is_null($attributes)) {
             $this->has_atts = true;
             $apiObjects = $this->assignAttributes($apiObjects, $attributes);
-        } elseif (isset($apiObjects[0]->getValues()[0]->attribute)) {
+        } elseif (isset($apiObjects[0]->values[0]->attribute)) {
             $this->has_atts = true;
         }
 
@@ -42,12 +42,12 @@ class Items extends ListBase
             $hasAid = array_keys($matches, $aid);
 
             foreach ($hasAid as $key) {
-                if (is_array($item->getValues()[$key]->data)) {
-                    if (in_array($data, $item->getValues()[$key]->data)) {
+                if (is_array($item->getValues()[$key]->getData())) {
+                    if (in_array($data, $item->getValues()[$key]->getData())) {
                         return true;
                     }
                 } else {
-                    if ($item->getValues()[$key]->data === $data) {
+                    if ($item->getValues()[$key]->getData() === $data) {
                         return true;
                     }
                 }
@@ -86,7 +86,7 @@ class Items extends ListBase
         foreach ($apiObjects as &$item) {
             $item->hasAtts = true;
             $item->attributes = $atts;
-            $item->setAttsToValues();
+            $item->values = $this->assignAttsToValues($item->values, $atts);
         }
 
         return $apiObjects;

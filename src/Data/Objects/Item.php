@@ -184,7 +184,7 @@ class Item extends ObjectBase
         return $this->values[$valMatch];
     }
 
-    public function getValueByAid(string $aid, ?string $type): object
+    public function getValueByAid(string $aid, ?string $type = null): object
     {
         $valMatch = array_search($aid, array_column($this->values, 'attribute_id'));
         if (! is_int($valMatch)) {
