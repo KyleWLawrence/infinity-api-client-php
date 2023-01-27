@@ -15,6 +15,11 @@ class ListBase implements \ArrayAccess
         $this->setObjects($apiObjects);
     }
 
+    public function toArray(): array
+    {
+        return $this->list;
+    }
+
     protected function setObjects($apiObjects): void
     {
         foreach ($apiObjects as $obj) {

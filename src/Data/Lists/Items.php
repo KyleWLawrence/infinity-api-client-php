@@ -23,7 +23,10 @@ class Items extends ListBase
         }
 
         parent::__construct($apiObjects, $board_id);
-        $this->assignAttributes();
+
+        if (! is_null($attributes)) {
+            $this->assignAttributes();
+        }
     }
 
     public function assignAttributes(): object

@@ -31,6 +31,23 @@ class Item extends ObjectBase
         return $this->attributes;
     }
 
+    public function setAttributes(array $atts): object
+    {
+        $atts = array_combine(array_column($atts, 'id'), $atts);
+        $this->attributes = $atts;
+
+        foreach ($this->values as &$val) {
+            $aid = $val->attribute_id;
+            if (! isset($this->atts[$aid])) {
+                throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
+            }
+
+            $val->attribute = $this->atts[$aid];
+        }
+
+        return $this;
+    }
+
     protected function setObjectVars(object $apiObject): void
     {
         parent::setObjectVars($apiObject);
