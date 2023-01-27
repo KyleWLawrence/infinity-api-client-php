@@ -17,7 +17,8 @@ class References extends ResourceAbstract
      */
     public function getAdditionalRouteParams(): array
     {
-        $boardParam = ['board_id' => reset($this->getLatestChainedParameter())];
+        $latest = $this->getLatestChainedParameter();
+        $boardParam = ['board_id' => reset($latest)];
 
         return array_merge($boardParam, $this->additionalRouteParams);
     }

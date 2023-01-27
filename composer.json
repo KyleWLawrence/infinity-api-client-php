@@ -35,6 +35,9 @@
             "KyleWLawrence\\Infinity\\Api\\": "src/Api",
             "KyleWLawrence\\Infinity\\Data\\": "src/Data",
             "KyleWLawrence\\Infinity\\Console\\": "src/Console"
-        }
+        },
+        "files": [
+            "src/Data/Helpers.php"
+        ]
     }
 }
