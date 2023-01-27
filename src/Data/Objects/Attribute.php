@@ -16,25 +16,24 @@ class Attribute extends ObjectBase
 
     protected array $folders;
 
-    public readonly array $dataType = [
-        // 'checkbox' => bool,
-        // 'created_at' => string,
-        // 'created_by' => int,
-        // 'data' => string,
-        // 'email' => string,
-        // 'label' => array,
-        // 'links' => array,
-        // 'longtext' => string,
-        // 'members' => array,
-        // 'number' => int|float,
-        // 'phone' => string,
-        // 'progress' => int,
-        // 'rating' => int,
-        // 'source_folder' => string,
-        // 'text' => string,
-        // 'updated_at' => string,
-        // 'vote' => int,
-        // 'attachments'
+    public protected array $dataType = [
+        'checkbox' => 'bool',
+        'created_at' => 'string',
+        'created_by' => 'int',
+        'data' => 'string',
+        'email' => 'string',
+        'label' => 'array',
+        'links' => 'array',
+        'longtext' => 'string',
+        'members' => 'array',
+        'number' => 'float,int',
+        'phone' => 'string',
+        'progress' => 'int',
+        'rating' => 'int',
+        'source_folder' => 'string',
+        'text' => 'string',
+        'updated_at' => 'string',
+        'vote' => 'int',
     ];
 
     protected function getUpdateSet()
