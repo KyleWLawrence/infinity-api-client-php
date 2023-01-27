@@ -12,17 +12,27 @@ class Items extends ListBase
     public function __construct(
         array $apiObjects,
         string $board_id,
-        ?array $attributes = null,
+        public ?array $attributes = null,
         protected $client = new InfinityService(),
     ) {
         if (! is_null($attributes)) {
+            $this->attributes = array_combine(array_column($attributes, 'id'), $attributes);
             $this->has_atts = true;
-            $apiObjects = $this->assignAttributes($apiObjects, $attributes);
         } elseif (isset($apiObjects[0]->values[0]->attribute)) {
             $this->has_atts = true;
         }
 
         parent::__construct($apiObjects, $board_id);
+        $this->assignAttributes();
+    }
+
+    public function assignAttributes(): object
+    {
+        foreach ($this->list as &$item) {
+            $item->setAttributes($this->attributes);
+        }
+
+        return $this;
     }
 
     public function findItemByData(array|bool|string $data, string $aid): object
@@ -77,32 +87,5 @@ class Items extends ListBase
         $id = $atts[$attKey]->settings->labels[$labelKey]->id;
 
         return $this->findItemsByData($id, $aid);
-    }
-
-    public function assignAttsToItems(array $apiObjects, array $atts): array
-    {
-        $atts = array_combine(array_column($atts, 'id'), $atts);
-
-        foreach ($apiObjects as &$item) {
-            $item->hasAtts = true;
-            $item->attributes = $atts;
-            $item->values = $this->assignAttsToValues($item->values, $atts);
-        }
-
-        return $apiObjects;
-    }
-
-    public function assignAttsToValues(array $values, array $atts): array
-    {
-        foreach ($values as &$val) {
-            $aid = $val->attribute_id;
-            if (! isset($atts[$aid])) {
-                throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
-            }
-
-            $val->attribute = $atts[$aid];
-        }
-
-        return $values;
     }
 }
