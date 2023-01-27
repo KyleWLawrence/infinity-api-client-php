@@ -48,6 +48,20 @@ class Item extends ObjectBase
         }
     }
 
+    public function setAttsToValues(): object
+    {
+        foreach ($this->values as &$val) {
+            $aid = $val->attribute_id;
+            if (! isset($this->atts[$aid])) {
+                throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
+            }
+
+            $val->attribute = $this->atts[$aid];
+        }
+
+        return $this;
+    }
+
     public function convertInfValObj(object $val, string $type): object
     {
         switch($type) {

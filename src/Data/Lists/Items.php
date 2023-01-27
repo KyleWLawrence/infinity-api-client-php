@@ -86,7 +86,7 @@ class Items extends ListBase
         foreach ($apiObjects as &$item) {
             $item->hasAtts = true;
             $item->attributes = $atts;
-            $item->getValues() = $this->assignAttsToValues($item->getValues(), $atts);
+            $item->setAttsToValues();
         }
 
         return $apiObjects;
