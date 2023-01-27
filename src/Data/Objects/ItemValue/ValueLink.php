@@ -87,8 +87,6 @@ class ValueLink extends ValueBase
 
         if (is_int($valMatch)) {
             return $this->data[$valMatch];
-        } else {
-            return;
         }
     }
 

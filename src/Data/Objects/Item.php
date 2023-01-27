@@ -65,7 +65,7 @@ class Item extends ObjectBase
     public function convertInfValObj(object $val, string $type): object
     {
         switch($type) {
-            case 'link':
+            case 'links':
                 $val = new ValueLink($val);
                 break;
             case 'label':
