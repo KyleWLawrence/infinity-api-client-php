@@ -15,12 +15,12 @@ class ItemComments extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
-    protected $objectName = 'comment';
+    protected string $objectName = 'comment';
 
     /**
      * {@inheritdoc}
      */
-    protected $objectNamePlural = 'comments';
+    protected string $objectNamePlural = 'comments';
 
     /**
      * {@inherticdoc}

@@ -15,12 +15,12 @@ class ItemValues extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
-    protected $objectName = 'value';
+    protected string $objectName = 'value';
 
     /**
      * {@inheritdoc}
      */
-    protected $objectNamePlural = 'values';
+    protected string $objectNamePlural = 'values';
 
     /**
      * {@inherticdoc}
