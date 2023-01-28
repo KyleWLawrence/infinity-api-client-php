@@ -28,12 +28,11 @@ class ItemComments extends ResourceAbstract
     public function getAdditionalRouteParams(): array
     {
         $board_id = $this->getChainedParameters();
-        $board_id = reset($board_id);
         $item_id = $this->getLatestChainedParameter(get_class());
 
         $boardParam = [
-            'board_id' => $board_id,
-            'item_id' => $item_id,
+            'board_id' => reset($board_id),
+            'item_id' => reset($item_id),
         ];
 
         return array_merge($boardParam, $this->additionalRouteParams);
