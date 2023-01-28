@@ -18,26 +18,6 @@ class Attachments extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
-    public static function getValidSubResources(): array
-    {
-        return [
-        ];
-    }
-
-    /**
-     * {@inherticdoc}
-     */
-    public function getAdditionalRouteParams(): array
-    {
-        $latest = $this->getLatestChainedParameter();
-        $boardParam = ['board_id' => reset($latest)];
-
-        return array_merge($boardParam, $this->additionalRouteParams);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function setUpRoutes(): void
     {
         $this->setRoutes([

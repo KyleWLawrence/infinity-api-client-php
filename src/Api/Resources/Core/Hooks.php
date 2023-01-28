@@ -17,8 +17,8 @@ class Hooks extends ResourceAbstract
      */
     public function getAdditionalRouteParams(): array
     {
-        $latest = $this->getLatestChainedParameter();
-        $boardParam = ['board_id' => reset($latest)];
+        $board_id = $this->getLatestChainedParameter([get_class()]);
+        $boardParam = ['board_id' => $board_id];
 
         return array_merge($boardParam, $this->additionalRouteParams);
     }

@@ -27,11 +27,13 @@ class ItemComments extends ResourceAbstract
      */
     public function getAdditionalRouteParams(): array
     {
-        $board = $this->getLaestChainedParameter();
-        $item = $this->getLatestChainedParameter(['Infinity\Api\Resources\Core\Items']);
+        $board_id = $this->getChainedParameters();
+        $board_id = reset($board_id);
+        $item_id = $this->getLatestChainedParameter(get_class());
+
         $boardParam = [
-            'board_id' => reset($board),
-            'item_id' => reset($item),
+            'board_id' => $board_id,
+            'item_id' => $item_id,
         ];
 
         return array_merge($boardParam, $this->additionalRouteParams);
