@@ -6,15 +6,15 @@ use Ramsey\Uuid\Uuid;
 
 class ValueBase
 {
-    public readonly string $id;
+    public string $id;
 
-    public readonly string $object;
+    public string $object;
 
-    public readonly string $attribute_id;
+    public string $attribute_id;
 
-    public readonly string $item_id;
+    public string $item_id;
 
-    public readonly bool $deleted;
+    public bool $deleted;
 
     public string $data_type = 'string';
 

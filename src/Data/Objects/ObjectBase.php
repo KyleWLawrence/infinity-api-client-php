@@ -10,25 +10,25 @@ use Ramsey\Uuid\Uuid;
 
 class ObjectBase
 {
-    public readonly string|bool|array|null $default_data;
+    public string|bool|array|null $default_data;
 
-    public readonly float $sort_order;
+    public float $sort_order;
 
-    public readonly string $type;
+    public string $type;
 
-    protected string $id;
+    public string $id;
 
-    public readonly string $object;
+    public string $object;
 
     protected string $obj_name;
 
     protected string $obj_name_plural;
 
-    public readonly string $created_at;
+    public string $created_at;
 
-    public readonly bool $deleted;
+    public bool $deleted = false;
 
-    public readonly int $created_by;
+    public int $created_by;
 
     protected string $parent_resource_id_key;
 
