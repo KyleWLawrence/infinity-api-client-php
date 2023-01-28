@@ -121,4 +121,13 @@ class ObjectBase
 
         return true;
     }
+
+    public function when($condition, $callback)
+    {
+        if ($condition) {
+            return $callback($this) ?: $this;
+        }
+
+        return $this;
+    }
 }
