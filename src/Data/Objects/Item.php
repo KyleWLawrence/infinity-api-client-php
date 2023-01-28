@@ -69,11 +69,11 @@ class Item extends ObjectBase
     {
         foreach ($this->values as &$val) {
             $aid = $val->attribute_id;
-            if (! isset($this->atts[$aid])) {
+            if (! isset($this->attributes[$aid])) {
                 throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
             }
 
-            $val->attribute = $this->atts[$aid];
+            $val->attribute = $this->attributes[$aid];
         }
 
         return $this;

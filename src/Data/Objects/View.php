@@ -4,7 +4,7 @@ namespace KyleWLawrence\Infinity\Data\Objects;
 
 class View extends ObjectBase
 {
-    public readonly string $obj_name = 'view';
+    protected string $obj_name = 'view';
 
-    public readonly string $obj_name_plural = 'views';
+    protected string $obj_name_plural = 'views';
 }

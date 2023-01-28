@@ -22,12 +22,19 @@ class ValueBase
 
     public object $attribute;
 
-    protected string|array|bool $data;
+    protected string|array|bool|null $data;
+
+    protected bool $updated = false;
 
     public function __construct(
         protected object $apiObject,
     ) {
         $this->setObjectVars($apiObject);
+    }
+
+    public function isUpdated(): bool
+    {
+        return $this->updated;
     }
 
     protected function setObjectVars(object $apiObject): void

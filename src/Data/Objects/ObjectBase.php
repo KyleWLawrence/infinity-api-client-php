@@ -16,13 +16,13 @@ class ObjectBase
 
     public readonly string $type;
 
-    public readonly string $id;
+    protected string $id;
 
     public readonly string $object;
 
-    public readonly string $obj_name;
+    protected string $obj_name;
 
-    public readonly string $obj_name_plural;
+    protected string $obj_name_plural;
 
     public readonly string $created_at;
 
@@ -30,9 +30,9 @@ class ObjectBase
 
     public readonly int $created_by;
 
-    public readonly string $parentIdKey;
+    protected string $parent_resource_id_key;
 
-    public readonly string $parentId;
+    protected string $parent_resource_id;
 
     protected bool $updated = false;
 
@@ -72,6 +72,11 @@ class ObjectBase
         foreach ($vars as $key => $var) {
             $this->$key = $var;
         }
+    }
+
+    public function getId(): ?string
+    {
+        return $this->id;
     }
 
     protected function setVar(string $key, $val): object
