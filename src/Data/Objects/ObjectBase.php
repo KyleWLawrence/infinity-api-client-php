@@ -104,6 +104,11 @@ class ObjectBase
         return $this->updated;
     }
 
+    public function isNew(): bool
+    {
+        return ($this->isValidId($this->id)) ? false : true;
+    }
+
     /**
      * Check that all parameters have been supplied
      *

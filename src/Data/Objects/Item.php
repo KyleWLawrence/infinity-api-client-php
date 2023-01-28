@@ -67,6 +67,10 @@ class Item extends ObjectBase
 
     public function convertInfValObj(object $val, string $type): object
     {
+        if ( get_class( $val ) !== 'stdClass' ) {
+            return $val;
+        }
+
         switch($type) {
             case 'links':
                 $val = new ValueLink($val);
