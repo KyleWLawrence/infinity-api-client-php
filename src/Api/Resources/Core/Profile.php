@@ -3,7 +3,6 @@
 namespace KyleWLawrence\Infinity\Api\Resources\Core;
 
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
-use KyleWLawrence\Infinity\Api\Traits\Utility\InstantiatorTrait;
 
 /**
  * The Profile class exposes key methods for getting the current profile
@@ -12,8 +11,6 @@ use KyleWLawrence\Infinity\Api\Traits\Utility\InstantiatorTrait;
  */
 class Profile extends ResourceAbstract
 {
-    use InstantiatorTrait;
-
     /**
      * @var bool
      */

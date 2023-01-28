@@ -4,6 +4,7 @@ namespace KyleWLawrence\Infinity\Api\Resources\Core;
 
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
 use KyleWLawrence\Infinity\Api\Traits\Resource\Defaults;
+use KyleWLawrence\Infinity\Api\Traits\Utility\InstantiatorTrait;
 
 /**
  * The Items class exposes comment methods for items
@@ -13,6 +14,7 @@ use KyleWLawrence\Infinity\Api\Traits\Resource\Defaults;
  */
 class Items extends ResourceAbstract
 {
+    use InstantiatorTrait;
     use Defaults;
 
     /**
