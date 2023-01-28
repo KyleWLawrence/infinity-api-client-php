@@ -284,6 +284,18 @@ abstract class ResourceAbstract
     }
 
     /**
+     * @return object
+     */
+    public function when($condition, $callback): object
+    {
+        if ($condition) {
+            return $callback($this) ?: $this;
+        }
+
+        return $this;
+    }
+
+    /**
      * Wrapper for common GET requests
      *
      * @param    $route

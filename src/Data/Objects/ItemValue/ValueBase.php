@@ -32,6 +32,14 @@ class ValueBase
         $this->setObjectVars($apiObject);
     }
 
+    public function getUpdateSet(): array
+    {
+        return [
+            'attribute_id' => $this->attribute_id,
+            'data' => $this->data,
+        ];
+    }
+
     public function isUpdated(): bool
     {
         return $this->updated;

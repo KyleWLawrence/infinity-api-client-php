@@ -38,11 +38,11 @@ class Item extends ObjectBase
 
         foreach ($this->values as &$val) {
             $aid = $val->attribute_id;
-            if (! isset($this->atts[$aid])) {
+            if (! isset($this->attributes[$aid])) {
                 throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
             }
 
-            $val->attribute = $this->atts[$aid];
+            $val->attribute = $this->attributes[$aid];
         }
 
         return $this;
@@ -63,20 +63,6 @@ class Item extends ObjectBase
                 }
             }
         }
-    }
-
-    public function setAttsToValues(): object
-    {
-        foreach ($this->values as &$val) {
-            $aid = $val->attribute_id;
-            if (! isset($this->attributes[$aid])) {
-                throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
-            }
-
-            $val->attribute = $this->attributes[$aid];
-        }
-
-        return $this;
     }
 
     public function convertInfValObj(object $val, string $type): object
@@ -131,7 +117,7 @@ class Item extends ObjectBase
         return $this->setVar('parent_id', $val);
     }
 
-    protected function getUpdateSet()
+    public function getUpdateSet()
     {
         $this->unsetEmptyVals();
 
@@ -142,7 +128,7 @@ class Item extends ObjectBase
         ];
     }
 
-    protected function getDeleteSet(): array
+    public function getDeleteSet(): array
     {
         $set = [];
         foreach ($this->values as $val) {
