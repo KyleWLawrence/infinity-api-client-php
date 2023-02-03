@@ -15,6 +15,8 @@ class Item extends ObjectBase
 
     protected ?string $parent_id;
 
+    public string $object = 'item';
+
     protected array $values;
 
     public $has_atts = false;
@@ -67,7 +69,7 @@ class Item extends ObjectBase
 
     public function convertInfValObj(object $val, string $type): object
     {
-        if ( get_class( $val ) !== 'stdClass' ) {
+        if (get_class($val) !== 'stdClass') {
             return $val;
         }
 
@@ -159,9 +161,12 @@ class Item extends ObjectBase
             'object' => 'value',
             'data' => $data,
             'attribute_id' => $aid,
-            'item_id' => $this->id,
             'deleted' => false,
         ];
+
+        if (isset($this->id)) {
+            $val->item_id = $this->id;
+        }
 
         if (isset($data) && $data !== null && ! empty($data) && $data !== false) {
             $val->id = $this->generateId();

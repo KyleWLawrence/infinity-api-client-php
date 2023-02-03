@@ -106,7 +106,7 @@ class ObjectBase
 
     public function isNew(): bool
     {
-        return ($this->isValidId($this->id)) ? false : true;
+        return (isset($this->id) && $this->isValidId($this->id)) ? false : true;
     }
 
     /**

@@ -38,14 +38,14 @@ class Items extends ListBase
         return $this;
     }
 
-    public function findItemByData(array|bool|string $data, string $aid): object
+    public function findItemByData(array|bool|string $data, string $aid): ?object
     {
         $items = $this->findItemsByData($data, $aid);
         if (count($items) > 1) {
             throw new Exception('Found '.count($items).' items when expected to find one for data '.print_r($data, true).' and \$aid '.$aid);
         }
 
-        return reset($items);
+        return (count($items) > 0) ? reset($items) : null;
     }
 
     public function findItemsByData(array|bool|string $data, string $aid): array
