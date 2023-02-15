@@ -26,7 +26,7 @@ class AttributeLabel extends Attribute
         return $this->label_map[$id];
     }
 
-    public function getLabelId($name, $error = false): string|bool
+    public function getLabelId($name, $error = false): ?string
     {
         if (in_array($name, $this->label_map)) {
             return array_search($name, $this->label_map);

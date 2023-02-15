@@ -17,7 +17,13 @@ class ListBase implements \ArrayAccess
 
     public function toArray(): array
     {
-        return $this->list;
+        $list = [];
+
+        foreach ($this->list as $obj) {
+            $list[] = $obj->toStdObj();
+        }
+
+        return $list;
     }
 
     protected function setObjects($apiObjects): void
@@ -55,9 +61,13 @@ class ListBase implements \ArrayAccess
         return isset($this->list[$offset]) ? $this->list[$offset] : null;
     }
 
+    public function getColumn($column) {
+        return array_column($this->list, $column);
+    }
+
     public function getById(string $id): object
     {
-        $itemKey = array_search($id, array_column($this->list, 'id'));
+        $itemKey = array_search($id, $this->getColumn('id'));
         if (! is_int($itemKey)) {
             throw new Exception("Unable to find item id ($id) in list");
         }

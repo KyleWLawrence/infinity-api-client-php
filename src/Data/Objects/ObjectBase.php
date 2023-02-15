@@ -36,6 +36,8 @@ class ObjectBase
 
     protected bool $updated = false;
 
+    protected array $object_keys;
+
     //-----------------------------------------------------------------------------------
     //    General
     //-----------------------------------------------------------------------------------
@@ -65,9 +67,20 @@ class ObjectBase
         }
     }
 
+    public function toStdObj(): object
+    {
+        $set = [];
+        foreach ($this->object_keys as $key) {
+            $set[$key] = $this->$key;
+        }
+
+        return (object) $set;
+    }
+
     protected function setObjectVars(object $apiObject): void
     {
         $vars = (array) $apiObject;
+        $this->object_keys = array_keys($vars);
 
         foreach ($vars as $key => $var) {
             $this->$key = $var;

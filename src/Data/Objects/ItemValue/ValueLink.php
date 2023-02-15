@@ -88,6 +88,8 @@ class ValueLink extends ValueBase
         if (is_int($valMatch)) {
             return $this->data[$valMatch];
         }
+
+        return null;
     }
 
     public function getLinkNameByUrl(string $url): ?string

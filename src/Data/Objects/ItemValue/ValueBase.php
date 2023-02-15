@@ -26,8 +26,10 @@ class ValueBase
 
     protected bool $updated = false;
 
+    protected bool $new = false;
+
     public function __construct(
-        protected object $apiObject,
+        object $apiObject,
     ) {
         $this->setObjectVars($apiObject);
     }
@@ -35,6 +37,7 @@ class ValueBase
     public function getUpdateSet(): array
     {
         return [
+            'id' => $this->id,
             'attribute_id' => $this->attribute_id,
             'data' => $this->data,
         ];
@@ -45,12 +48,35 @@ class ValueBase
         return $this->updated;
     }
 
+    public function isNew(): bool
+    {
+        return $this->new;
+    }
+
+    public function shouldDelete(): bool
+    {
+        if (empty($this->data) && ! $this->isNew()) {
+            return true;
+        }
+
+        return false;
+    }
+
     protected function setObjectVars(object $apiObject): void
     {
         $vars = (array) $apiObject;
 
         foreach ($vars as $key => $var) {
             $this->$key = $var;
+        }
+
+        if (! isset($this->data)) {
+            $this->data = $this->empty_data;
+        }
+
+        if (! isset($this->id)) {
+            $this->new = true;
+            $this->id = $this->generateId();
         }
     }
 
@@ -81,8 +107,12 @@ class ValueBase
 
     public function hasData(mixed $data): bool
     {
-        if (is_array($data)) {
-            return (count(array_diff($data, $this->data)) > 0) ? false : true;
+        if (is_array($this->data)) {
+            if (! is_array($data)) {
+                $data = [$data];
+            }
+
+            return (count(array_diff($data, $this->data)) === 0) ? true : false;
         } else {
             return ($data === $this->data) ? true : false;
         }

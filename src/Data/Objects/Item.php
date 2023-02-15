@@ -37,6 +37,26 @@ class Item extends ObjectBase
     {
         $atts = array_combine(array_column($atts, 'id'), $atts);
         $this->attributes = $atts;
+        $this->has_atts = true;
+
+        foreach ($this->values as &$val) {
+            $aid = $val->attribute_id;
+            if (! isset($this->attributes[$aid])) {
+                throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
+            }
+
+            $val->attribute = $this->attributes[$aid];
+            $val = $this->convertInfValObj($val, $val->attribute->type);
+        }
+
+        return $this;
+    }
+
+    public function resetAttributes(array $atts): object
+    {
+        $atts = array_combine(array_column($atts, 'id'), $atts);
+        $this->attributes = $atts;
+        $this->has_atts = true;
 
         foreach ($this->values as &$val) {
             $aid = $val->attribute_id;
@@ -48,23 +68,6 @@ class Item extends ObjectBase
         }
 
         return $this;
-    }
-
-    protected function setObjectVars(object $apiObject): void
-    {
-        parent::setObjectVars($apiObject);
-
-        if (! empty($this->values) && isset($this->values[0]->attribute)) {
-            $this->has_atts = true;
-
-            foreach ($this->values as &$val) {
-                $val = $this->convertInfValObj($val, $val->attribute->type);
-
-                if (! isset($this->attributes[$val->attribute->id])) {
-                    $this->attributes[$val->attribute->id] = $val->attribute;
-                }
-            }
-        }
     }
 
     public function convertInfValObj(object $val, string $type): object
@@ -138,7 +141,7 @@ class Item extends ObjectBase
     {
         $set = [];
         foreach ($this->values as $val) {
-            if (empty($val->data) && isset($val->id) && $this->isValidId($val->id)) {
+            if ($val->shouldDelete()) {
                 $set[] = $val->id;
             }
         }
@@ -177,7 +180,7 @@ class Item extends ObjectBase
             $val->attribute = $this->attributes[$aid];
             $type = $this->attributes[$aid]->type;
         } elseif (is_null($type)) {
-            throw new Exception("Unable to find value with attribute_id ($aid) and no type provide to generate");
+            throw new Exception("Unable to find attribute ($aid) and no type provide to generate");
         }
 
         $obj = $this->convertInfValObj($val, $type);

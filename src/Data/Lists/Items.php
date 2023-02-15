@@ -7,26 +7,21 @@ use KyleWLawrence\Infinity\Services\InfinityService;
 
 class Items extends ListBase
 {
-    public bool $has_atts = false;
-
     public function __construct(
         array $apiObjects,
         string $board_id,
         public ?array $attributes = null,
         protected $client = new InfinityService(),
     ) {
-        if (! is_null($attributes)) {
-            $this->attributes = array_combine(array_column($attributes, 'id'), $attributes);
-            $this->has_atts = true;
-        } elseif (isset($apiObjects[0]->values[0]->attribute)) {
-            $this->has_atts = true;
+        if (is_null($attributes)) {
+            $attributes = $this->client->boards($board_id)->attributes()->getAllLoop()->data;
         }
+
+        $this->attributes = array_combine(array_column($attributes, 'id'), $attributes);
 
         parent::__construct($apiObjects, $board_id);
 
-        if (! is_null($attributes)) {
-            $this->assignAttributes();
-        }
+        $this->assignAttributes();
     }
 
     public function assignAttributes(): object
