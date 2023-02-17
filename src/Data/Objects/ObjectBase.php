@@ -28,7 +28,7 @@ class ObjectBase
 
     public bool $deleted = false;
 
-    public int $created_by;
+    public ?int $created_by;
 
     protected string $parent_resource_id_key;
 
@@ -93,19 +93,19 @@ class ObjectBase
     }
 
      public function getBoardId(): ?string
-    {
-        return $this->board_id;
-    }
+     {
+         return $this->board_id;
+     }
 
    protected function setVar(string $key, $val): object
-    {
-        if ($this->$key !== $val) {
-            $this->$key = $val;
-            $this->updated = true;
-        }
+   {
+       if ($this->$key !== $val) {
+           $this->$key = $val;
+           $this->updated = true;
+       }
 
-        return $this;
-    }
+       return $this;
+   }
 
     public function generateId(): string
     {
@@ -129,10 +129,6 @@ class ObjectBase
 
     /**
      * Check that all parameters have been supplied
-     *
-     * @param  array  $params
-     * @param  array  $mandatory
-     * @return bool
      */
     public function hasKeys(array $params, array $mandatory): bool
     {

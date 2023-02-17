@@ -12,14 +12,18 @@ if (! function_exists('conv_inf_obj')) {
     /**
      * @return Infinity\Data\Objects\ObjectBase
      */
-    function conv_inf_obj(object $obj, ?string $boardId = null, ?object|array $atts = null): object
+    function conv_inf_obj(object $obj, ?string $boardId = null, null|object|array $atts = null): object
     {
+        if (is_object($atts)) {
+            $atts = $atts->toArray();
+        }
+
         if ($obj->deleted === true) {
             throw new DeletedObjectException("Obj ($obj->id) is deleted");
         }
 
         if (function_exists('config') && config('infinity-laravel.objects') === true) {
-            return conv_laravel_inf_obj($obj, $boardId);
+            return conv_laravel_inf_obj($obj, $boardId, $atts);
         }
 
         switch($obj->object) {
@@ -28,7 +32,7 @@ if (! function_exists('conv_inf_obj')) {
                 break;
             case 'item':
                 $obj = new Item($obj);
-                if ( ! is_null( $atts ) ) {
+                if (! is_null($atts)) {
                     $obj->setAttributes($atts);
                 }
                 break;
@@ -46,11 +50,15 @@ if (! function_exists('conv_inf_obj')) {
         return $obj;
     }
 
-    function conv_inf_list(array $array, ?string $boardId = null, ?array|object $atts = null)
+    function conv_inf_list(array $array, ?string $boardId = null, null|array|object $atts = null)
     {
+        if (is_object($atts)) {
+            $atts = $atts->toArray();
+        }
+
         $obj = reset($array)->object;
 
-        switch($obj->object) {
+        switch($obj) {
             case 'item':
                 $list = new Items($array, $boardId, $atts);
                 break;
