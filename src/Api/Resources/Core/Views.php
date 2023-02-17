@@ -4,6 +4,7 @@ namespace KyleWLawrence\Infinity\Api\Resources\Core;
 
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
 use KyleWLawrence\Infinity\Api\Traits\Resource\Defaults;
+use KyleWLawrence\Infinity\Api\Traits\Resource\ProcessReturn;
 
 /**
  * The Views class exposes comment methods for views
@@ -11,6 +12,7 @@ use KyleWLawrence\Infinity\Api\Traits\Resource\Defaults;
 class Views extends ResourceAbstract
 {
     use Defaults;
+    use ProcessReturn;
 
     /**
      * {@inherticdoc}

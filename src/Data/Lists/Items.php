@@ -9,12 +9,12 @@ class Items extends ListBase
 {
     public function __construct(
         array $apiObjects,
-        string $board_id,
+        protected string $board_id,
         public ?array $attributes = null,
         protected $client = new InfinityService(),
     ) {
         if (is_null($attributes)) {
-            $attributes = $this->client->boards($board_id)->attributes()->getAllLoop()->data;
+            throw new Exception('Attributes required to generate Items list');
         }
 
         $this->attributes = array_combine(array_column($attributes, 'id'), $attributes);

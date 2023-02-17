@@ -1,17 +1,18 @@
 <?php
 
 use KyleWLawrence\Infinity\Data\Exceptions\DeletedObjectException;
-use KyleWLawrence\Infinity\Data\Exceptions\UnknownObjectException;
+use KyleWLawrence\Infinity\Data\Lists\Items;
+use KyleWLawrence\Infinity\Data\Lists\ListBase;
 use KyleWLawrence\Infinity\Data\Objects\Attribute;
 use KyleWLawrence\Infinity\Data\Objects\AttributeLabel;
-use KyleWLawrence\Infinity\Data\Objects\ObjectBase;
 use KyleWLawrence\Infinity\Data\Objects\Item;
+use KyleWLawrence\Infinity\Data\Objects\ObjectBase;
 
 if (! function_exists('conv_inf_obj')) {
     /**
      * @return Infinity\Data\Objects\ObjectBase
      */
-    function conv_inf_obj(object $obj, ?string $boardId = null): object
+    function conv_inf_obj(object $obj, ?string $boardId = null, ?object|array $atts = null): object
     {
         if ($obj->deleted === true) {
             throw new DeletedObjectException("Obj ($obj->id) is deleted");
@@ -25,15 +26,11 @@ if (! function_exists('conv_inf_obj')) {
             case 'folderview':
                 $obj = new View($obj);
                 break;
-            case 'reference':
-            case 'hook':
-            case 'folder':
-            case 'comment':
-            case 'board':
-                $obj = new ObjectBase($obj);
-                break;
             case 'item':
                 $obj = new Item($obj);
+                if ( ! is_null( $atts ) ) {
+                    $obj->setAttributes($atts);
+                }
                 break;
             case 'attribute':
                 $obj = match ($obj->type) {
@@ -42,10 +39,26 @@ if (! function_exists('conv_inf_obj')) {
                 };
                 break;
             default:
-                throw new UnknownObjectException("Obj ($obj->object) is not recognized");
+                $obj = new ObjectBase($obj);
                 break;
         }
 
         return $obj;
+    }
+
+    function conv_inf_list(array $array, ?string $boardId = null, ?array|object $atts = null)
+    {
+        $obj = reset($array)->object;
+
+        switch($obj->object) {
+            case 'item':
+                $list = new Items($array, $boardId, $atts);
+                break;
+            default:
+                $list = new ListBase($array, $boardId);
+                break;
+        }
+
+        return $list;
     }
 }

@@ -4,6 +4,7 @@ namespace KyleWLawrence\Infinity\Api\Resources\Core;
 
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
 use KyleWLawrence\Infinity\Api\Traits\Resource\Defaults;
+use KyleWLawrence\Infinity\Api\Traits\Resource\ProcessReturn;
 use KyleWLawrence\Infinity\Api\Traits\Utility\InstantiatorTrait;
 
 /**
@@ -16,6 +17,9 @@ class Items extends ResourceAbstract
 {
     use InstantiatorTrait;
     use Defaults;
+    use ProcessReturn;
+
+    public array $atts = [];
 
     /**
      * {@inheritdoc}
@@ -54,5 +58,19 @@ class Items extends ResourceAbstract
                 'delete' => 'boards/{board_id}/items/{id}',
             ]
         );
+    }
+
+    public function setAttributes(object|array $atts): object
+    {
+        if (is_object($atts)) {
+            $atts = $atts->toArray();
+        }
+
+        $board_id = $this->getLatestChainedParameter([get_class()]);
+        $bid = reset($board_id);
+
+        $this->atts[$bid] = $atts;
+
+        return $this;
     }
 }

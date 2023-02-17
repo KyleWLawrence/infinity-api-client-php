@@ -1,13 +1,13 @@
 <?php
 
-namespace KyleWLawrence\Infinity\Api;
+namespace KyleWLawrence\WaboxApp\Http;
 
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Utils;
-use KyleWLawrence\Infinity\Api\Exceptions\ApiResponseException;
-use KyleWLawrence\Infinity\Api\Exceptions\AuthException;
+use KyleWLawrence\WaboxApp\Http\Exceptions\ApiResponseException;
+use KyleWLawrence\WaboxApp\Http\Exceptions\AuthException;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -18,7 +18,7 @@ class Http
     public static $curl;
 
     /**
-     * Use the send method to call every endpoint
+     * Use the send method to call every endpoint except for oauth/tokens
      *
      * @param  HttpClient  $client
      * @param  string  $endPoint E.g. "/tickets.json"
@@ -38,11 +38,20 @@ class Http
         $endPoint,
         $options = []
     ) {
+        if (! isset($options['postFields'])) {
+            $options['postFields'] = [];
+        }
+
+        $options['postFields'] = array_merge([
+            'token' => $client->getToken(),
+            'uid' => $client->getUid(),
+        ], $options['postFields']);
+
         $options = array_merge(
             [
                 'method' => 'GET',
                 'contentType' => 'application/json',
-                'postFields' => null,
+                'postFields' => [],
                 'queryParams' => null,
             ],
             $options
@@ -85,7 +94,6 @@ class Http
         }
 
         try {
-            [$request, $requestOptions] = $client->getAuth()->prepareRequest($request, $requestOptions);
             $response = $client->guzzle->send($request, $requestOptions);
         } catch (RequestException $e) {
             $requestException = RequestException::create($e->getRequest(), $e->getResponse(), $e);
@@ -101,8 +109,6 @@ class Http
 
             $request->getBody()->rewind();
         }
-
-        //$client->setSideload(null);
 
         return json_decode($response->getBody());
     }

@@ -19,7 +19,7 @@ trait GetAllLoop
      */
     public function getAllLoop(array $params = [], $routeKey = 'getAll')
     {
-        $params = array_merge(['limit' => 100], $params);
+        $params = array_merge($params,['limit' => 100]);
 
         try {
             $route = $this->getRoute($routeKey, $params);
@@ -34,26 +34,26 @@ trait GetAllLoop
 
         $data = [];
         $has_more = true;
-        $request = (object) [];
+        $response = (object) [];
 
         while ($has_more) {
-            $request = $this->client->get(
+            $response = $this->client->get(
                 $route,
                 $params
             );
 
-            $has_more = (isset($request->has_more)) ? $request->has_more : false;
-            $params['after'] = $request->after;
+            $has_more = (isset($response->has_more)) ? $response->has_more : false;
+            $params['after'] = $response->after;
 
-            if (! isset($request->data)) {
-                throw new Exception("Unable to find \$request->data for route $route");
+            if (! isset($response->data)) {
+                throw new Exception("Unable to find \$response->data for route $route");
             }
 
-            $data = array_merge($data, $request->data);
+            $data = array_merge($data, $response->data);
         }
 
-        $request->data = $data;
-
-        return $request;
+        $response->data = $data;
+        
+        return $this->processReturn( $response, 'list', 'data' );
     }
 }

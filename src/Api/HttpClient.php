@@ -48,16 +48,6 @@ class HttpClient
     /**
      * @var string
      */
-    protected string $scheme;
-
-    /**
-     * @var string
-     */
-    protected string $hostname;
-
-    /**
-     * @var string
-     */
     protected string $apiUrl;
 
     /**
@@ -71,22 +61,16 @@ class HttpClient
     protected Debug $debug;
 
     /**
-     * @var \GuzzleHttp\Client
-     */
-    public Client $guzzle;
-
-    protected int $workspace;
-
-    /**
      * @param  string  $scheme
      * @param  string  $hostname
      * @param  \GuzzleHttp\Client  $guzzle
      */
     public function __construct(
-        $workspace,
-        $scheme = 'https',
-        $hostname = 'app.startinfinity.com',
-        $guzzle = null
+        protected int $workspace,
+        public bool $conv_objects = false,
+        protected string $scheme = 'https',
+        protected string $hostname = 'app.startinfinity.com',
+        public ?Client $guzzle = null
     ) {
         if (is_null($guzzle)) {
             $handler = HandlerStack::create();
@@ -94,13 +78,8 @@ class HttpClient
                 return $e instanceof RequestException && strpos($e->getMessage(), 'ssl') !== false;
             }]), 'retry_handler');
             $this->guzzle = new Client(compact('handler'));
-        } else {
-            $this->guzzle = $guzzle;
         }
 
-        $this->workspace = $workspace;
-        $this->hostname = $hostname;
-        $this->scheme = $scheme;
         $this->apiUrl = "$scheme://$hostname/";
         $this->debug = new Debug();
     }

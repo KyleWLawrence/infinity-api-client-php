@@ -5,6 +5,7 @@ namespace KyleWLawrence\Infinity\Api\Resources\Core;
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
 use KyleWLawrence\Infinity\Api\Traits\Resource\GetAll;
 use KyleWLawrence\Infinity\Api\Traits\Resource\GetAllLoop;
+use KyleWLawrence\Infinity\Api\Traits\Resource\ProcessReturn;
 
 /**
  * The Workspaces class exposes key methods for getting the current profile
@@ -15,6 +16,7 @@ class Workspaces extends ResourceAbstract
 {
     use GetAll;
     use GetAllLoop;
+    use ProcessReturn;
 
     /**
      * @var bool

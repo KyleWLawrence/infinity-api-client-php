@@ -38,9 +38,11 @@ trait Get
             $route = $this->resourceName.'/'.$id.'';
         }
 
-        return $this->client->get(
+        $response = $this->client->get(
             $route,
             $queryParams
         );
+
+        return $this->processReturn($response, 'obj');
     }
 }

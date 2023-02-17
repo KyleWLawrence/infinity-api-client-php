@@ -10,7 +10,7 @@ class ListBase implements \ArrayAccess
 
     public function __construct(
         array $apiObjects,
-        public readonly string $board_id,
+        protected ?string $board_id = null,
     ) {
         $this->setObjects($apiObjects);
     }
@@ -70,6 +70,17 @@ class ListBase implements \ArrayAccess
         $itemKey = array_search($id, $this->getColumn('id'));
         if (! is_int($itemKey)) {
             throw new Exception("Unable to find item id ($id) in list");
+        }
+
+        return $this->list[$itemKey];
+    }
+
+    public function getByKey(string $search, string $key): ?object
+    {
+        $itemKey = array_search($search, $this->getColumn($key));
+
+        if (! is_int($itemKey)) {
+            return null;
         }
 
         return $this->list[$itemKey];

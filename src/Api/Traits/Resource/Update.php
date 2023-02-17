@@ -32,9 +32,11 @@ trait Update
             $route = $this->resourceName.'/'.$id.'';
         }
 
-        return $this->client->put(
+        $response = $this->client->put(
             $route,
             $updateResourceFields
         );
+
+        return $this->processReturn( $response, 'obj' );
     }
 }

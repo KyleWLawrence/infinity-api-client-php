@@ -4,6 +4,7 @@ namespace KyleWLawrence\Infinity\Api\Resources\Core;
 
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
 use KyleWLawrence\Infinity\Api\Traits\Resource\Defaults;
+use KyleWLawrence\Infinity\Api\Traits\Resource\ProcessReturn;
 
 /**
  * The Attributes class exposes comment methods for attributes
@@ -11,6 +12,7 @@ use KyleWLawrence\Infinity\Api\Traits\Resource\Defaults;
 class Attributes extends ResourceAbstract
 {
     use Defaults;
+    use ProcessReturn;
 
     /**
      * {@inherticdoc}

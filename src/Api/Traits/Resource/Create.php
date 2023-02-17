@@ -26,9 +26,11 @@ trait Create
             $this->setRoute(__FUNCTION__, $route);
         }
 
-        return $this->client->post(
+        $response = $this->client->post(
             $route,
             $params
         );
+
+        return $this->processReturn($response, 'obj');
     }
 }

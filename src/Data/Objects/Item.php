@@ -9,7 +9,7 @@ use KyleWLawrence\Infinity\Data\Objects\ItemValue\ValueLink;
 
 class Item extends ObjectBase
 {
-    public string $nameId;
+    public string $name_id;
 
     protected string $folder_id;
 
@@ -33,8 +33,12 @@ class Item extends ObjectBase
         return $this->attributes;
     }
 
-    public function setAttributes(array $atts): object
+    public function setAttributes(array|object $atts): object
     {
+        if (is_object($atts)) {
+            $atts = $atts->toArray();
+        }
+
         $atts = array_combine(array_column($atts, 'id'), $atts);
         $this->attributes = $atts;
         $this->has_atts = true;

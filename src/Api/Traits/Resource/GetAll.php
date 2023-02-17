@@ -31,9 +31,11 @@ trait GetAll
             $this->setRoute(__FUNCTION__, $route);
         }
 
-        return $this->client->get(
+        $response = $this->client->get(
             $route,
             $params
         );
+
+        return $this->processReturn($response, 'list', 'data');
     }
 }

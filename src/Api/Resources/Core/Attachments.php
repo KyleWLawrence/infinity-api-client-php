@@ -6,6 +6,7 @@ use KyleWLawrence\Infinity\Api\Exceptions\CustomException;
 use KyleWLawrence\Infinity\Api\Exceptions\MissingParametersException;
 use KyleWLawrence\Infinity\Api\Http;
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
+use KyleWLawrence\Infinity\Api\Traits\Resource\ProcessReturn;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -15,6 +16,8 @@ use Psr\Http\Message\StreamInterface;
  */
 class Attachments extends ResourceAbstract
 {
+    use ProcessReturn;
+
     /**
      * {@inheritdoc}
      */
@@ -63,7 +66,7 @@ class Attachments extends ResourceAbstract
             ]
         );
 
-        return $response;
+        return $this->processReturn($response);
     }
 
     /**
@@ -85,9 +88,11 @@ class Attachments extends ResourceAbstract
 
         $route = $this->getRoute(__FUNCTION__);
 
-        return $this->client->post(
+        $response = $this->client->post(
             $route,
             $params
         );
+
+        return $this->processReturn($response);
     }
 }

@@ -7,6 +7,7 @@ use KyleWLawrence\Infinity\Api\Traits\Resource\Create;
 use KyleWLawrence\Infinity\Api\Traits\Resource\Get;
 use KyleWLawrence\Infinity\Api\Traits\Resource\GetAll;
 use KyleWLawrence\Infinity\Api\Traits\Resource\GetAllLoop;
+use KyleWLawrence\Infinity\Api\Traits\Resource\ProcessReturn;
 use KyleWLawrence\Infinity\Api\Traits\Utility\InstantiatorTrait;
 
 /**
@@ -21,11 +22,12 @@ use KyleWLawrence\Infinity\Api\Traits\Utility\InstantiatorTrait;
  */
 class Boards extends ResourceAbstract
 {
-    use InstantiatorTrait;
     use GetAllLoop;
     use GetAll;
     use Get;
     use Create;
+    use InstantiatorTrait;
+    use ProcessReturn;
 
     /**
      * {@inheritdoc}

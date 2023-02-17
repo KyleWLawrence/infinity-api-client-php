@@ -3,6 +3,7 @@
 namespace KyleWLawrence\Infinity\Api\Resources\Core;
 
 use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
+use KyleWLawrence\Infinity\Api\Traits\Resource\ProcessReturn;
 
 /**
  * The Profile class exposes key methods for getting the current profile
@@ -11,6 +12,8 @@ use KyleWLawrence\Infinity\Api\Resources\ResourceAbstract;
  */
 class Profile extends ResourceAbstract
 {
+    use ProcessReturn;
+
     /**
      * @var bool
      */
@@ -46,8 +49,10 @@ class Profile extends ResourceAbstract
     {
         $route = $this->getRoute(__FUNCTION__);
 
-        return $this->client->get(
+        $response = $this->client->get(
             $route
         );
+
+        return $this->processReturn( $response );
     }
 }

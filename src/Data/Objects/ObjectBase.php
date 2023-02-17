@@ -44,7 +44,7 @@ class ObjectBase
 
     public function __construct(
         protected object $apiObject,
-        public readonly string $board_id,
+        protected ?string $board_id = null,
     ) {
         $this->setObjectVars($apiObject);
 
@@ -92,7 +92,12 @@ class ObjectBase
         return $this->id;
     }
 
-    protected function setVar(string $key, $val): object
+     public function getBoardId(): ?string
+    {
+        return $this->board_id;
+    }
+
+   protected function setVar(string $key, $val): object
     {
         if ($this->$key !== $val) {
             $this->$key = $val;
