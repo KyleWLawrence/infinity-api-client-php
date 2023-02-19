@@ -3,7 +3,6 @@
 namespace KyleWLawrence\Infinity\Data\Lists;
 
 use Exception;
-use KyleWLawrence\Infinity\Services\InfinityService;
 
 class Items extends ListBase
 {
@@ -11,7 +10,6 @@ class Items extends ListBase
         array $apiObjects,
         protected string $board_id,
         public ?array $attributes = null,
-        protected $client = new InfinityService(),
     ) {
         if (is_null($attributes)) {
             throw new Exception('Attributes required to generate Items list');
@@ -22,6 +20,16 @@ class Items extends ListBase
         parent::__construct($apiObjects, $board_id);
 
         $this->assignAttributes();
+    }
+
+    public function collect(?array $data = null)
+    {
+        $data = (is_null($data)) ? $this->list : $data;
+        $class = get_class();
+        $bid = (isset($this->board_id)) ? $this->board_id : null;
+        $atts = (isset($this->attributes)) ? $this->attributes : null;
+
+        return new $class($data, $bid, $atts);
     }
 
     public function assignAttributes(): object
@@ -43,9 +51,9 @@ class Items extends ListBase
         return (count($items) > 0) ? reset($items) : null;
     }
 
-    public function findItemsByData(array|bool|string $data, string $aid): array
+    public function findItemsByData(array|bool|string $data, string $aid): object
     {
-        return array_filter($this->list, function ($item) use ($data, $aid) {
+        $list = array_filter($this->list, function ($item) use ($data, $aid) {
             $matches = array_column($item->getValues(), 'attribute_id');
             $hasAid = array_keys($matches, $aid);
 
@@ -63,9 +71,11 @@ class Items extends ListBase
 
             return false;
         });
+
+        return $this->collect($list);
     }
 
-    public function findItemsByLabelName(string $name, string $aid): array
+    public function findItemsByLabelName(string $name, string $aid): object
     {
         if ($this->has_atts === false) {
             throw new Exception(__FUNCTION__." requires the item list to has_atts to find label $name on aid ($aid)");

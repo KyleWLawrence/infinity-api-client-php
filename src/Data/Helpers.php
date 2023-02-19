@@ -1,8 +1,12 @@
 <?php
 
 use KyleWLawrence\Infinity\Data\Exceptions\DeletedObjectException;
+use KyleWLawrence\Infinity\Data\Lists\Attributes;
 use KyleWLawrence\Infinity\Data\Lists\Items;
+use KyleWLawrence\Infinity\Data\Lists\Views;
+use KyleWLawrence\Infinity\Data\Lists\Folders;
 use KyleWLawrence\Infinity\Data\Lists\ListBase;
+use KyleWLawrence\Infinity\Data\Lists\References;
 use KyleWLawrence\Infinity\Data\Objects\Attribute;
 use KyleWLawrence\Infinity\Data\Objects\AttributeLabel;
 use KyleWLawrence\Infinity\Data\Objects\Item;
@@ -56,11 +60,27 @@ if (! function_exists('conv_inf_obj')) {
             $atts = $atts->toArray();
         }
 
+        if (function_exists('config') && config('infinity-laravel.objects') === true) {
+            return conv_laravel_inf_list($obj, $boardId, $atts);
+        }
+
         $obj = reset($array)->object;
 
         switch($obj) {
             case 'item':
                 $list = new Items($array, $boardId, $atts);
+                break;
+            case 'attribute':
+                $list = new Attributes($array, $boardId);
+                break;
+            case 'reference':
+                $list = new References($array, $boardId);
+                break;
+            case 'view':
+                $list = new Views($array, $boardId);
+                break;
+            case 'folder':
+                $list = new Folders($array, $boardId);
                 break;
             default:
                 $list = new ListBase($array, $boardId);

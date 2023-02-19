@@ -35,19 +35,10 @@ class HttpClient
 
     use InstantiatorTrait;
 
-    /**
-     * @var array
-     */
     private array $headers = [];
 
-    /**
-     * @var Auth
-     */
     protected Auth $auth;
 
-    /**
-     * @var string
-     */
     protected string $apiUrl;
 
     /**
@@ -55,14 +46,9 @@ class HttpClient
      */
     protected string $apiBasePath;
 
-    /**
-     * @var Debug
-     */
     protected Debug $debug;
 
     /**
-     * @param  string  $scheme
-     * @param  string  $hostname
      * @param  \GuzzleHttp\Client  $guzzle
      */
     public function __construct(
@@ -84,10 +70,15 @@ class HttpClient
         $this->debug = new Debug();
     }
 
+    public function setConvObj(bool $toggle): HttpClient
+    {
+        $this->conv_objects = $toggle;
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
-     *
-     * @return array
      */
     public static function getValidSubResources(): array
     {
@@ -100,9 +91,6 @@ class HttpClient
         ];
     }
 
-    /**
-     * @return Auth
-     */
     public function getAuth(): Auth
     {
         return $this->auth;
@@ -111,8 +99,6 @@ class HttpClient
     /**
      * Configure the authorization method
      *
-     * @param    $strategy
-     * @param  array  $options
      *
      * @throws AuthException
      */
@@ -121,9 +107,6 @@ class HttpClient
         $this->auth = new Auth($strategy, $options);
     }
 
-    /**
-     * @return array
-     */
     public function getHeaders(): array
     {
         return $this->headers;
@@ -132,7 +115,6 @@ class HttpClient
     /**
      * @param  string  $key The name of the header to set
      * @param  string  $value The value to set in the header
-     * @return HttpClient
      *
      * @internal param array $headers
      */
@@ -145,8 +127,6 @@ class HttpClient
 
     /**
      * Return the user agent string
-     *
-     * @return string
      */
     public function getUserAgent(): string
     {
@@ -155,8 +135,6 @@ class HttpClient
 
     /**
      * Returns the supplied subdomain
-     *
-     * @return string
      */
     public function getWorkspace(): string
     {
@@ -175,8 +153,6 @@ class HttpClient
 
     /**
      * Returns the generated api URL
-     *
-     * @return string
      */
     public function getApiUrl(): string
     {
@@ -239,7 +215,6 @@ class HttpClient
     /**
      * This is a helper method to do a get request.
      *
-     * @param    $endpoint
      * @param  array  $queryParams
      * @return \stdClass | null
      *
@@ -260,7 +235,6 @@ class HttpClient
     /**
      * This is a helper method to do a post request.
      *
-     * @param    $endpoint
      * @param  array  $postData
      * @param  array  $options
      * @return null|\stdClass

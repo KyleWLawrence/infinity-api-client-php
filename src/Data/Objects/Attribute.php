@@ -14,7 +14,9 @@ class Attribute extends ObjectBase
 
     protected array $folders;
 
-    public array $folder_ids;
+    public array $folder_ids = [];
+
+    public array $folder_names = [];
 
     public array $dataType = [
         'checkbox' => 'bool',
@@ -146,55 +148,6 @@ class Attribute extends ObjectBase
 
         return false;
     }
-
-    public static function exclude_attr_only_in_folders($exclude, $atts)
-    {
-        foreach ($atts as $key => $att) {
-            $diff = array_diff($att['folder_ids'], $exclude);
-
-            if (empty($diff)) {
-                unset($atts[$key]);
-            }
-        }
-
-        return $atts;
-    }
-
-    public static function keep_attr_only_if_in_folders($folders, $atts)
-    {
-        if (! is_array($folders)) {
-            $folders = [$folders];
-        }
-
-        foreach ($atts as $key => $att) {
-            $similar = array_intersect($folders, $att['folder_ids']);
-
-            if (empty($similar)) {
-                unset($atts[$key]);
-            }
-        }
-
-        return $atts;
-    }
-
-   public static function match_attr_to_folders($folders, $atts)
-   {
-       foreach ($folders as $folder) {
-           foreach ($atts as &$att) {
-               if (! isset($att['folder_names'])) {
-                   $att['folder_names'] = [];
-                   $att['folder_ids'] = [];
-               }
-
-               if (in_array($att['id'], $folder['attribute_ids'])) {
-                   $att['folder_names'][] = $folder['name'];
-                   $att['folder_ids'][] = $folder['id'];
-               }
-           }
-       }
-
-       return $atts;
-   }
 
     public static function match_item_by_attr_value($val, $aid, $items)
     {

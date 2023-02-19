@@ -203,6 +203,18 @@ class Item extends ObjectBase
         return $this->values[$valMatch];
     }
 
+    public function setDataByAid(string $aid, bool|string|array $data, ?string $type = null): object
+    {
+        $valMatch = array_search($aid, array_column($this->values, 'attribute_id'));
+        if (! is_int($valMatch)) {
+            return $this->genValue($aid, $data, $type);
+        } else {
+            $this->values[$valMatch]->setData($data);
+        }
+
+        return $this;
+    }
+
     public function getValueByAid(string $aid, ?string $type = null): object
     {
         $valMatch = array_search($aid, array_column($this->values, 'attribute_id'));

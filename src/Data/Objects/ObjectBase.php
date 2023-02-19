@@ -127,6 +127,15 @@ class ObjectBase
         return (isset($this->id) && $this->isValidId($this->id)) ? false : true;
     }
 
+    public function getVar(string $key): mixed
+    {
+        if (isset($this->$key)) {
+            return $this->$key;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Check that all parameters have been supplied
      */
