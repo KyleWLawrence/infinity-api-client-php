@@ -2,11 +2,11 @@
 
 use KyleWLawrence\Infinity\Data\Exceptions\DeletedObjectException;
 use KyleWLawrence\Infinity\Data\Lists\Attributes;
-use KyleWLawrence\Infinity\Data\Lists\Items;
-use KyleWLawrence\Infinity\Data\Lists\Views;
 use KyleWLawrence\Infinity\Data\Lists\Folders;
+use KyleWLawrence\Infinity\Data\Lists\Items;
 use KyleWLawrence\Infinity\Data\Lists\ListBase;
 use KyleWLawrence\Infinity\Data\Lists\References;
+use KyleWLawrence\Infinity\Data\Lists\Views;
 use KyleWLawrence\Infinity\Data\Objects\Attribute;
 use KyleWLawrence\Infinity\Data\Objects\AttributeLabel;
 use KyleWLawrence\Infinity\Data\Objects\Item;
@@ -32,22 +32,25 @@ if (! function_exists('conv_inf_obj')) {
 
         switch($obj->object) {
             case 'folderview':
-                $obj = new View($obj);
+                $obj = new View($obj, $boardId);
                 break;
             case 'item':
-                $obj = new Item($obj);
+                $obj = new Item($obj, $boardId);
                 if (! is_null($atts)) {
                     $obj->setAttributes($atts);
                 }
                 break;
             case 'attribute':
+                if (! isset($obj->type)) {
+                    print_r($obj);
+                }
                 $obj = match ($obj->type) {
-                    'label' => new AttributeLabel($obj),
-                    default => new Attribute($obj),
+                    'label' => new AttributeLabel($obj, $boardId),
+                    default => new Attribute($obj, $boardId),
                 };
                 break;
             default:
-                $obj = new ObjectBase($obj);
+                $obj = new ObjectBase($obj, $boardId);
                 break;
         }
 
@@ -61,7 +64,7 @@ if (! function_exists('conv_inf_obj')) {
         }
 
         if (function_exists('config') && config('infinity-laravel.objects') === true) {
-            return conv_laravel_inf_list($obj, $boardId, $atts);
+            return conv_laravel_inf_list($array, $boardId, $atts);
         }
 
         $obj = reset($array)->object;

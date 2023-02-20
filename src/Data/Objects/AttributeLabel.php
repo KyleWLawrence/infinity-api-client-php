@@ -10,7 +10,7 @@ class AttributeLabel extends Attribute
 
     public function __construct(
         protected object $apiObject,
-        string $board_id,
+        protected ?string $board_id,
     ) {
         parent::__construct($apiObject, $board_id);
 

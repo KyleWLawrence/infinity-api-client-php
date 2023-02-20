@@ -4,11 +4,13 @@ namespace KyleWLawrence\Infinity\Data\Lists;
 
 use ArrayAccess;
 use ArrayIterator;
+use Countable;
 use Exception;
 use IteratorAggregate;
+use LogIt;
 use Traversable;
 
-class ListBase implements ArrayAccess, IteratorAggregate
+class ListBase implements ArrayAccess, IteratorAggregate, Countable
 {
     protected array $list = [];
 
@@ -37,14 +39,23 @@ class ListBase implements ArrayAccess, IteratorAggregate
         return $list;
     }
 
+    public function count(): int
+    {
+        return count($this->list);
+    }
+
     protected function setObjects($apiObjects): void
     {
         foreach ($apiObjects as $obj) {
             if ($obj->deleted === true) {
-                throw new Exception("Unexpected deleted item: $obj->id");
+                LogIt::reportWarning("Unexpected deleted item: $obj->id");
             }
 
-            $this->list[] = conv_inf_obj($obj, $this->board_id);
+            if (get_class($obj) === 'stdClass') {
+                $this->list[] = conv_inf_obj($obj, $this->board_id);
+            } else {
+                $this->list[] = $obj;
+            }
         }
     }
 
@@ -94,12 +105,12 @@ class ListBase implements ArrayAccess, IteratorAggregate
             $itemKey = array_search($search, $this->getColumn($key));
         } else {
             $itemKey = false;
-            foreach ($this->list as $key => &$item) {
+            foreach ($this->list as $ikey => &$item) {
                 if ($full && strpos($item->$key, $search) !== false) {
-                    $itemKey = $key;
+                    $itemKey = $ikey;
                     break;
                 } elseif ($item->$key === $search) {
-                    $itemKey = $key;
+                    $itemKey = $ikey;
                     break;
                 }
             }
@@ -120,7 +131,7 @@ class ListBase implements ArrayAccess, IteratorAggregate
     public function findByKey(string $search, string $key, bool $full = true): ?object
     {
         $items = [];
-        foreach ($this->list as $key => &$item) {
+        foreach ($this->list as &$item) {
             if ($full) {
                 if ($item->$key === $search) {
                     $items[] = $item;
