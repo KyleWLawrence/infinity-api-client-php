@@ -224,4 +224,59 @@ class Item extends ObjectBase
 
         return $this->values[$valMatch];
     }
+
+    public function getValueListByName(array $options = [])
+    {
+        $options['key'] = 'name';
+
+        return $this->genValueList($options);
+    }
+
+    public function getValueListByAid(array $options = [])
+    {
+        $options['key'] = 'aid';
+
+        return $this->genValueList($options);
+    }
+
+    protected function genValueList(array $options)
+    {
+        $options = array_merge([
+            'label_names' => false,
+            'include_empty' => true,
+        ], $options);
+
+        $attsUsed = [];
+        $list = [];
+        $aidKey = ($options['key'] === 'aid') ? true : false;
+
+        foreach ($this->values as $val) {
+            $key = ($aidKey) ? $val->attribute_id : $val->attribute->name;
+            $attsUsed[] = $val->attribute_id;
+
+            if ($options['label_names'] === true && $val->attribute->type === 'label') {
+                $list[$key] = $val->getLabelNames($val->getData());
+            } else {
+                $list[$key] = $val->getData();
+            }
+        }
+
+        if ($options['include_empty']) {
+            foreach ($this->attributes as $att) {
+                $key = ($aidKey) ? $att->id : $att->name;
+
+                if (! isset($list[$key])) {
+                    if ($options['label_names'] === true && $att->type === 'label') {
+                        $list[$key] = (empty($att->default_data)) ? [] : $att->getLabelNames($att->default_data);
+                    } else {
+                        $list[$key] = $att->default_data;
+                    }
+                }
+            }
+        } else {
+            $list = array_diff($list, ['', null, []]);
+        }
+
+        return $list;
+    }
 }

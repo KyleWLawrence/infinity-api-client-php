@@ -57,19 +57,17 @@ if (! function_exists('conv_inf_obj')) {
         return $obj;
     }
 
-    function conv_inf_list(array $array, ?string $boardId = null, null|array|object $atts = null)
+    function conv_inf_list(array $array, string $type, ?string $boardId = null, null|array|object $atts = null)
     {
         if (is_object($atts)) {
             $atts = $atts->toArray();
         }
 
         if (function_exists('config') && config('infinity-laravel.objects') === true) {
-            return conv_laravel_inf_list($array, $boardId, $atts);
+            return conv_laravel_inf_list($array, $type, $boardId, $atts);
         }
 
-        $obj = reset($array)->object;
-
-        switch($obj) {
+        switch($type) {
             case 'item':
                 $list = new Items($array, $boardId, $atts);
                 break;

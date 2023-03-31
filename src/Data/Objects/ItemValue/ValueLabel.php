@@ -4,13 +4,24 @@ namespace KyleWLawrence\Infinity\Data\Objects\ItemValue;
 
 class ValueLabel extends ValueBase
 {
-    public string|bool|array $empty_data = [];
-
     public function setData(mixed $data): object
     {
         $data = array_unique($data);
 
         return $this->setVar('data', $data);
+    }
+
+    public function getLabelNames(): array
+    {
+        $names = [];
+        foreach ($this->data as $id) {
+            $match = array_search($id, array_column($this->attribute->settings->labels, 'id'));
+            if (is_int($match)) {
+                $names[$id] = $this->attribute->settings->labels[$match]->name;
+            }
+        }
+
+        return $names;
     }
 
     public function hasLabelName(string $name, object $att): bool

@@ -18,8 +18,6 @@ class ValueBase
 
     public string $data_type = 'string';
 
-    public string|bool|array $empty_data = '';
-
     public object $attribute;
 
     protected string|array|bool|null $data;
@@ -31,6 +29,10 @@ class ValueBase
     public function __construct(
         object $apiObject,
     ) {
+        if (! isset($apiObject->attribute) || ! is_object($apiObject->attribute)) {
+            throw new \Exception('Values must be populated with an attribute');
+        }
+
         $this->setObjectVars($apiObject);
     }
 
@@ -71,8 +73,10 @@ class ValueBase
         }
 
         if (! isset($this->data)) {
-            $this->data = $this->empty_data;
+            $this->data = $this->attribute->default_data;
         }
+
+        $this->data_type = gettype($this->attribute->default_data);
 
         if (! isset($this->id)) {
             $this->new = true;
@@ -120,7 +124,7 @@ class ValueBase
 
     public function deleteData(): object
     {
-        $this->setData($this->empty_data);
+        $this->setData($this->attribute->default_data);
 
         return $this;
     }

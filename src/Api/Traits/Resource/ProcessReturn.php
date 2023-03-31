@@ -22,7 +22,7 @@ trait ProcessReturn
             $atts = (isset($this->atts[$bid])) ? $this->atts[$bid] : null;
 
             if ($type === 'list') {
-                $data->$key = conv_inf_list($data->$key, $bid, $atts);
+                $data->$key = conv_inf_list($data->$key, $this->objectName, $bid, $atts);
 
                 return $data;
             } else {

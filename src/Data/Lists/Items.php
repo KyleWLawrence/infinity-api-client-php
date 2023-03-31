@@ -96,4 +96,29 @@ class Items extends ListBase
 
         return $this->findItemsByData($id, $aid);
     }
+
+    public function getValueListsByName(array $options = []): array
+    {
+        $function = 'getValueListByName';
+
+        return $this->genValueLists($function, $options);
+    }
+
+    public function getValueListsByAid(array $options = []): array
+    {
+        $function = 'getValueListByAid';
+
+        return $this->genValueLists($function, $options);
+    }
+
+    protected function genValueLists(string $function, array $options): array
+    {
+        $list = [];
+
+        foreach ($this->list as $item) {
+            $list[$item->id] = $item->$function($options);
+        }
+
+        return $list;
+    }
 }

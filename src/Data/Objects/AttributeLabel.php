@@ -17,13 +17,20 @@ class AttributeLabel extends Attribute
         $this->label_map = array_combine(array_column($this->settings->labels, 'id'), array_column($this->settings->labels, 'name'));
     }
 
-    public function getLabelName($id): string
+    public function getLabelName(string $id): string
     {
         if (! isset($this->label_map[$id])) {
             throw new Exception("Unable to find \$label for $id from attr #{$this->id}");
         }
 
         return $this->label_map[$id];
+    }
+
+    public function getLabelNames(array $ids): array
+    {
+        $idKeys = array_flip($ids);
+
+        return array_intersect_key($this->label_map, $idKeys);
     }
 
     public function getLabelId($name, $error = false): ?string

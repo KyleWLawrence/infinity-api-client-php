@@ -6,8 +6,6 @@ use Exception;
 
 class ValueLink extends ValueBase
 {
-    public string|bool|array $empty_data = [];
-
     public function removeLinkById(string $id): object
     {
         $valMatch = array_search($id, array_column($this->data, 'id'));
