@@ -8,7 +8,7 @@ class Items extends ListBase
 {
     public function __construct(
         array $apiObjects,
-        protected string $board_id,
+        protected ?string $board_id,
         public ?array $attributes = null,
     ) {
         if (is_null($attributes)) {
