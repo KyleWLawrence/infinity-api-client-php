@@ -47,7 +47,7 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
     protected function setObjects($apiObjects): void
     {
         foreach ($apiObjects as $obj) {
-            if ($obj->deleted === true) {
+            if (isset($obj->deleted) && $obj->deleted === true) {
                 LogIt::reportWarning("Unexpected deleted item: $obj->id");
             }
 

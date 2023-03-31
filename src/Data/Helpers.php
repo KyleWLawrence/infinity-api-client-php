@@ -22,7 +22,7 @@ if (! function_exists('conv_inf_obj')) {
             $atts = $atts->toArray();
         }
 
-        if ($obj->deleted === true) {
+        if (isset($obj->deleted) && $obj->deleted === true) {
             throw new DeletedObjectException("Obj ($obj->id) is deleted");
         }
 
