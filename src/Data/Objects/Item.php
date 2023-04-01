@@ -24,7 +24,7 @@ class Item extends ObjectBase
     public function __construct(
         protected object $apiObject,
         protected ?string $board_id = null,
-        public null|object|array $attributes = null,
+        protected null|object|array $attributes = null,
     ) {
         parent::__construct($apiObject, $board_id);
         $this->setAttributesOnStart($attributes);
@@ -51,6 +51,8 @@ class Item extends ObjectBase
                     $atts[$val->attribute->id] = $val->attribute;
                 }
             }
+        } elseif (is_null($atts)) {
+            return;
         }
 
         $this->setAttributes($atts);
