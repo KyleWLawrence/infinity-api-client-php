@@ -11,15 +11,26 @@ class Items extends ListBase
         protected ?string $board_id,
         public ?array $attributes = null,
     ) {
-        if (is_null($attributes)) {
-            throw new Exception('Attributes required to generate Items list');
+        if (! is_null($attributes)) {
+            $this->attributes = array_combine(array_column($attributes, 'id'), $attributes);
         }
 
-        $this->attributes = array_combine(array_column($attributes, 'id'), $attributes);
-
         parent::__construct($apiObjects, $board_id);
+    }
 
-        $this->assignAttributes();
+    protected function setObjects($apiObjects): void
+    {
+        foreach ($apiObjects as $obj) {
+            if (isset($obj->deleted) && $obj->deleted === true) {
+                LogIt::reportWarning("Unexpected deleted item: $obj->id");
+            }
+
+            if (get_class($obj) === 'stdClass') {
+                $this->list[] = conv_inf_obj($obj, $this->board_id, $this->attributes);
+            } else {
+                $this->list[] = $obj;
+            }
+        }
     }
 
     public function collect(?array $data = null)
@@ -48,7 +59,7 @@ class Items extends ListBase
             throw new Exception('Found '.count($items).' items when expected to find one for data '.print_r($data, true).' and \$aid '.$aid);
         }
 
-        return (count($items) > 0) ? reset($items) : null;
+        return (count($items) > 0) ? $items[0] : null;
     }
 
     public function findItemsByData(array|bool|string $data, string $aid): object

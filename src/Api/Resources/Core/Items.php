@@ -16,7 +16,10 @@ use KyleWLawrence\Infinity\Api\Traits\Utility\InstantiatorTrait;
 class Items extends ResourceAbstract
 {
     use InstantiatorTrait;
-    use Defaults;
+    use Defaults {
+        get as traitGet;
+        getAll as traitGetAll;
+    }
     use ProcessReturn;
 
     public array $atts = [];
@@ -58,6 +61,24 @@ class Items extends ResourceAbstract
                 'delete' => 'boards/{board_id}/items/{id}',
             ]
         );
+    }
+
+    public function get(string $id, array $params = [])
+    {
+        if (! isset($params['expand[]']) || empty($params['expand[]'])) {
+            $params['expand[]'] = 'values.attribute';
+        }
+
+        return $this->traitGet($id, $params);
+    }
+
+    public function getAll(array $params = [])
+    {
+        if (! isset($params['expand[]']) || empty($params['expand[]'])) {
+            $params['expand[]'] = 'values.attribute';
+        }
+
+        return $this->traitGetAll($params);
     }
 
     public function setAttributes(object|array $atts): object

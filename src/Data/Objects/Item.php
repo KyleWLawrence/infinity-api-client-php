@@ -21,7 +21,14 @@ class Item extends ObjectBase
 
     public $has_atts = false;
 
-    public array $attributes = [];
+    public function __construct(
+        protected object $apiObject,
+        protected ?string $board_id = null,
+        public null|object|array $attributes = null,
+    ) {
+        parent::__construct($apiObject, $board_id);
+        $this->setAttributesOnStart($attributes);
+    }
 
     public function getValues(): array
     {
@@ -31,6 +38,22 @@ class Item extends ObjectBase
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    protected function setAttributesOnStart(null|object|array $atts): void
+    {
+        if (is_object($atts)) {
+            $atts = $atts->toArray();
+        } elseif (is_null($atts) && isset($this->apiObject->values[0]->attribute)) {
+            $atts = [];
+            foreach ($this->apiObject->values as $val) {
+                if (! isset($atts[$val->attribute->id])) {
+                    $atts[$val->attribute->id] = $val->attribute;
+                }
+            }
+        }
+
+        $this->setAttributes($atts);
     }
 
     public function setAttributes(array|object $atts): object
