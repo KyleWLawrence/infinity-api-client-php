@@ -8,6 +8,7 @@ use Doctrine\Inflector\Rules\English;
 use Doctrine\Inflector\RulesetInflector;
 use Ramsey\Uuid\Uuid;
 
+#[\AllowDynamicProperties]
 class ObjectBase
 {
     public string|bool|array|null $default_data;

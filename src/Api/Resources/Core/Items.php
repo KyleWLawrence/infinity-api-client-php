@@ -87,6 +87,7 @@ class Items extends ResourceAbstract
             $atts = $atts->toArray();
         }
 
+        $atts = array_combine(array_column($atts, 'id'), $atts);
         $board_id = $this->getLatestChainedParameter([get_class()]);
         $bid = reset($board_id);
 

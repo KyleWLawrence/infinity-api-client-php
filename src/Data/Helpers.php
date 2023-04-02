@@ -18,10 +18,6 @@ if (! function_exists('conv_inf_obj')) {
      */
     function conv_inf_obj(object $obj, ?string $boardId = null, null|object|array $atts = null): object
     {
-        if (is_object($atts)) {
-            $atts = $atts->toArray();
-        }
-
         if (isset($obj->deleted) && $obj->deleted === true) {
             throw new DeletedObjectException("Obj ($obj->id) is deleted");
         }
@@ -59,10 +55,6 @@ if (! function_exists('conv_inf_obj')) {
 
     function conv_inf_list(array $array, string $type, ?string $boardId = null, null|array|object $atts = null)
     {
-        if (is_object($atts)) {
-            $atts = $atts->toArray();
-        }
-
         if (function_exists('config') && config('infinity-laravel.objects') === true) {
             return conv_laravel_inf_list($array, $type, $boardId, $atts);
         }

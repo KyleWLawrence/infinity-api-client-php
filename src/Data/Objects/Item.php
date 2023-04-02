@@ -42,9 +42,7 @@ class Item extends ObjectBase
 
     protected function setAttributesOnStart(null|object|array $atts): void
     {
-        if (is_object($atts)) {
-            $atts = $atts->toArray();
-        } elseif (is_null($atts) && isset($this->apiObject->values[0]->attribute)) {
+        if (is_null($atts) && isset($this->apiObject->values[0]->attribute)) {
             $atts = [];
             foreach ($this->apiObject->values as $val) {
                 if (! isset($atts[$val->attribute->id])) {
@@ -58,45 +56,36 @@ class Item extends ObjectBase
         $this->setAttributes($atts);
     }
 
-    public function setAttributes(array|object $atts): object
+    public function setAttributes(array|object $atts, $new = true): object
     {
         if (is_object($atts)) {
             $atts = $atts->toArray();
         }
 
         $atts = array_combine(array_column($atts, 'id'), $atts);
+
         $this->attributes = $atts;
         $this->has_atts = true;
 
         foreach ($this->values as &$val) {
             $aid = $val->attribute_id;
             if (! isset($this->attributes[$aid])) {
-                throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
+                throw new Exception("Unable to find Attribute by ID ($aid) in att list for value #{$val->id}");
             }
 
             $val->attribute = $this->attributes[$aid];
-            $val = $this->convertInfValObj($val, $val->attribute->type);
+
+            if ($new) {
+                $val = $this->convertInfValObj($val, $val->attribute->type);
+            }
         }
 
         return $this;
     }
 
-    public function resetAttributes(array $atts): object
+    public function resetAttributes(object|array $atts): object
     {
-        $atts = array_combine(array_column($atts, 'id'), $atts);
-        $this->attributes = $atts;
-        $this->has_atts = true;
-
-        foreach ($this->values as &$val) {
-            $aid = $val->attribute_id;
-            if (! isset($this->attributes[$aid])) {
-                throw new Exception("Unable to find Attribute by ID ($aid) in att list for item #{$val->id}");
-            }
-
-            $val->attribute = $this->attributes[$aid];
-        }
-
-        return $this;
+        return $this->setAttributes($atts, false);
     }
 
     public function convertInfValObj(object $val, string $type): object

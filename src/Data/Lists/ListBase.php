@@ -10,6 +10,7 @@ use IteratorAggregate;
 use LogIt;
 use Traversable;
 
+#[AllowDynamicProperties]
 class ListBase implements ArrayAccess, IteratorAggregate, Countable
 {
     protected array $list = [];

@@ -12,6 +12,7 @@ class ValueLink extends ValueBase
 
         if (is_int($valMatch)) {
             unset($this->data[$valMatch]);
+            $this->updated = true;
 
             return $this;
         } else {
@@ -25,6 +26,7 @@ class ValueLink extends ValueBase
 
         if (is_int($valMatch)) {
             unset($this->data[$valMatch]);
+            $this->updated = true;
         }
 
         return $this;
@@ -59,6 +61,58 @@ class ValueLink extends ValueBase
             $this->updated = true;
             $this->data[] = $data;
         }
+
+        return $this;
+    }
+
+    public function updateOrAddLink(string $url, string $name = '', string $favicon = ''): object
+    {
+        $object = $this->getLinkObjByUrl($url);
+
+        if (! is_object($object)) {
+            $this->genLink($url, $name, $favicon);
+        } else {
+            $name = (empty($name)) ? $object->name : $name;
+            $favicon = (empty($favicon)) ? $object->favicon : $favicon;
+
+            if ($object->name !== $name || $object->favicon !== $favicon) {
+                $link = (object) [
+                    'name' => $name,
+                    'favicon' => $favicon,
+                    'id' => $object->id,
+                    'url' => $url,
+                ];
+                $this->setLink($link);
+            }
+        }
+
+        return $this;
+    }
+
+    public function updateOrAddLinks(array $links): object
+    {
+        foreach ($links as $link) {
+            if (is_object($link)) {
+                $link = (array) $link;
+            }
+            $link = array_merge(['url' => '', 'name' => '', 'favicon' => ''], $link);
+            $this->updateOrAddLink($link['url'], $link['name'], $link['favicon']);
+        }
+
+        return $this;
+    }
+
+    public function replaceLinks(array $links): object
+    {
+        foreach ($this->data as $link) {
+            $valMatch = array_search($link->url, array_column($links, 'url'));
+
+            if (! is_int($valMatch)) {
+                $this->removeLinkById($link->id);
+            }
+        }
+
+        $this->updateOrAddLinks($links);
 
         return $this;
     }
@@ -113,19 +167,5 @@ class ValueLink extends ValueBase
         } else {
             return $object;
         }
-    }
-
-    public function updateOrAddLink(string $url, string $name = '', string $favicon = ''): object
-    {
-        $object = $this->getLinkObjByUrl($url);
-
-        if (! is_object($object)) {
-            $this->genLink($url, $name, $favicon);
-        } elseif ($object->name !== $name) {
-            $object->name = $name;
-            $this->setLink($object);
-        }
-
-        return $this;
     }
 }
