@@ -29,6 +29,12 @@ class ObjectBase
 
     public bool $deleted = false;
 
+    protected bool $api_updated = false;
+
+    protected bool $api_created = false;
+
+    public bool $api_deleted = false;
+
     public ?int $created_by;
 
     protected string $parent_resource_id_key;
@@ -111,6 +117,21 @@ class ObjectBase
     public function generateId(): string
     {
         return Uuid::uuid4();
+    }
+
+    public function isApiUpdated(): bool
+    {
+        return $this->api_updated;
+    }
+
+    public function isApiCreated(): bool
+    {
+        return $this->api_created;
+    }
+
+    public function isApiDelete(): bool
+    {
+        return $this->api_deleted;
     }
 
     public function isValidId(string $val): bool

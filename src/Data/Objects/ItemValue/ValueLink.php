@@ -12,6 +12,7 @@ class ValueLink extends ValueBase
 
         if (is_int($valMatch)) {
             unset($this->data[$valMatch]);
+            $this->data = array_values($this->data);
             $this->updated = true;
 
             return $this;
@@ -26,6 +27,7 @@ class ValueLink extends ValueBase
 
         if (is_int($valMatch)) {
             unset($this->data[$valMatch]);
+            $this->data = array_values($this->data);
             $this->updated = true;
         }
 
@@ -72,8 +74,8 @@ class ValueLink extends ValueBase
         if (! is_object($object)) {
             $this->genLink($url, $name, $favicon);
         } else {
-            $name = (empty($name)) ? $object->name : $name;
-            $favicon = (empty($favicon)) ? $object->favicon : $favicon;
+            $name = (empty($name) && isset($object->name)) ? $object->name : $name;
+            $favicon = (empty($favicon) && isset($object->favicon)) ? $object->favicon : $favicon;
 
             if ($object->name !== $name || $object->favicon !== $favicon) {
                 $link = (object) [

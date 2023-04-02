@@ -16,7 +16,7 @@ trait ProcessReturn
      */
     public function processReturn(object $data, string $type = 'obj', string $key = 'data'): object|array
     {
-        if ($this->client->conv_objects === true) {
+        if ($this->client->conv_objects === true && $this->skipConvObj === false) {
             $params = $this->getAdditionalRouteParams();
             $bid = (isset($params['board_id'])) ? $params['board_id'] : null;
             $atts = (isset($this->atts[$bid])) ? $this->atts[$bid] : null;
@@ -29,6 +29,8 @@ trait ProcessReturn
                 return conv_inf_obj($data, $bid, $atts);
             }
         } else {
+            $this->skipConvObj = false;
+
             return $data;
         }
     }

@@ -17,54 +17,26 @@ abstract class ResourceAbstract
 {
     use ChainedParametersTrait;
 
-    /**
-     * @var string
-     */
     protected string $resourceName;
 
-    /**
-     * @var string
-     */
     protected string $objectName;
 
-    /**
-     * @var string
-     */
     protected string $objectNamePlural;
 
-    /**
-     * @var \Infinity\Api\HttpClient
-     */
     protected HttpClient $client;
 
-    /**
-     * @var int
-     */
     protected int $lastId;
 
-    /**
-     * @var array
-     */
     protected array $routes = [];
 
-    /**
-     * @var array
-     */
     protected array $additionalRouteParams = [];
 
-    /**
-     * @var string
-     */
     protected string $apiBasePath;
 
-    /**
-     * @var string
-     */
     protected bool $includeWorkspace = true;
 
-    /**
-     * @param  HttpClient  $client
-     */
+    protected bool $skipConvObj = false;
+
     public function __construct(HttpClient $client, $apiBasePath = 'api/v2/')
     {
         if ($this->includeWorkspace) {
@@ -107,8 +79,6 @@ abstract class ResourceAbstract
      *    Where ticket would have a comments as a valid sub resource.
      *    The array would look like:
      *      ['comments' => '\Infinity\Api\Resources\TicketComments']
-     *
-     * @return array
      */
     public static function getValidSubResources(): array
     {
@@ -117,8 +87,6 @@ abstract class ResourceAbstract
 
     /**
      * Return the resource name using the name of the class (used for endpoints)
-     *
-     * @return string
      */
     protected function getResourceNameFromClass(): string
     {
@@ -132,9 +100,6 @@ abstract class ResourceAbstract
         return strtolower($underscored);
     }
 
-    /**
-     * @return string
-     */
     public function getResourceName(): string
     {
         return $this->resourceName;
@@ -145,6 +110,13 @@ abstract class ResourceAbstract
      */
     protected function setUpRoutes(): void
     {
+    }
+
+    public function setSkipConvObj(): object
+    {
+        $this->skipConvObj = true;
+
+        return $this;
     }
 
     /**
@@ -162,8 +134,6 @@ abstract class ResourceAbstract
 
     /**
      * Saves an id for future methods in the chain
-     *
-     * @return int
      */
     public function getLastId(): int
     {
@@ -172,10 +142,6 @@ abstract class ResourceAbstract
 
     /**
      * Check that all parameters have been supplied
-     *
-     * @param  array  $params
-     * @param  array  $mandatory
-     * @return bool
      */
     public function hasKeys(array $params, array $mandatory): bool
     {
@@ -190,10 +156,6 @@ abstract class ResourceAbstract
 
     /**
      * Check that any parameter has been supplied
-     *
-     * @param  array  $params
-     * @param  array  $mandatory
-     * @return bool
      */
     public function hasAnyKey(array $params, array $mandatory): bool
     {
@@ -208,8 +170,6 @@ abstract class ResourceAbstract
 
     /**
      * Wrapper for adding multiple routes via setRoute
-     *
-     * @param  array  $routes
      */
     public function setRoutes(array $routes): void
     {
@@ -220,9 +180,6 @@ abstract class ResourceAbstract
 
     /**
      * Add or override an existing route
-     *
-     * @param $name
-     * @param $route
      */
     public function setRoute($name, $route): void
     {
@@ -231,8 +188,6 @@ abstract class ResourceAbstract
 
     /**
      * Return all routes for this resource
-     *
-     * @return array
      */
     public function getRoutes(): array
     {
@@ -243,8 +198,6 @@ abstract class ResourceAbstract
      * Returns a route and replaces tokenized parts of the string with
      * the passed params
      *
-     * @param    $name
-     * @param  array  $params
      * @return mixed
      *
      * @throws \Exception
@@ -275,17 +228,11 @@ abstract class ResourceAbstract
         $this->additionalRouteParams = $additionalRouteParams;
     }
 
-    /**
-     * @return array
-     */
     public function getAdditionalRouteParams(): array
     {
         return $this->additionalRouteParams;
     }
 
-    /**
-     * @return object
-     */
     public function when($condition, $callback): object
     {
         if ($condition) {
@@ -298,8 +245,6 @@ abstract class ResourceAbstract
     /**
      * Wrapper for common GET requests
      *
-     * @param    $route
-     * @param  array  $params
      * @return \stdClass | null
      *
      * @throws ResponseException

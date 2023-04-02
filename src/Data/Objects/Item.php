@@ -169,10 +169,16 @@ class Item extends ObjectBase
 
     protected function unsetEmptyVals(): void
     {
+        $unset = false;
         foreach ($this->values as &$val) {
             if (empty($val->data)) {
+                $unset = true;
                 unset($val);
             }
+        }
+
+        if ($unset) {
+            $this->values = array_values($this->values);
         }
     }
 

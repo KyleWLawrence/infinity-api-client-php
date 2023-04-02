@@ -77,7 +77,7 @@ class ValueLabel extends ValueBase
 
     public function removeLabelId(string $id): object
     {
-        $val = array_diff($this->data, [$id]);
+        $val = array_values(array_diff($this->data, [$id]));
 
         return $this->setData($val);
     }
