@@ -26,6 +26,8 @@ class ValueBase
 
     protected bool $new = false;
 
+    protected array $object_keys;
+
     public function __construct(
         object $apiObject,
     ) {
@@ -34,6 +36,17 @@ class ValueBase
         }
 
         $this->setObjectVars($apiObject);
+    }
+
+    public function setAttribute(object $att): object
+    {
+        if (method_exists($att, 'toStdObj')) {
+            $att = $att->toStdObj;
+        }
+
+        $this->attribute = $att;
+
+        return $this;
     }
 
     public function getUpdateSet(): array
@@ -64,9 +77,20 @@ class ValueBase
         return false;
     }
 
+    public function toStdObj(): object
+    {
+        $set = [];
+        foreach ($this->object_keys as $key) {
+            $set[$key] = $this->$key;
+        }
+
+        return (object) $set;
+    }
+
     protected function setObjectVars(object $apiObject): void
     {
         $vars = (array) $apiObject;
+        $this->object_keys = array_keys($vars);
 
         foreach ($vars as $key => $var) {
             $this->$key = $var;

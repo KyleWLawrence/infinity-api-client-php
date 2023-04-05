@@ -4,11 +4,29 @@ namespace KyleWLawrence\Infinity\Data\Objects\ItemValue;
 
 class ValueLabel extends ValueBase
 {
+    protected array $label_map;
+
+    public function __construct(
+        object $apiObject,
+    ) {
+        parent::__construct($apiObject);
+
+        $this->label_map = array_combine(array_column($this->attribute->settings->labels, 'id'), array_column($this->attribute->settings->labels, 'name'));
+    }
+
     public function setData(mixed $data): object
     {
         $data = array_unique($data);
 
         return $this->setVar('data', $data);
+    }
+
+    public function setAttribute(object $att): object
+    {
+        parent::setAttribute($att);
+        $this->label_map = array_combine(array_column($this->attribute->settings->labels, 'id'), array_column($this->attribute->settings->labels, 'name'));
+
+        return $this;
     }
 
     public function getLabelNames(): array
@@ -42,9 +60,9 @@ class ValueLabel extends ValueBase
         return $name;
     }
 
-    public function hasLabelName(string $name, object $att): bool
+    public function hasLabelName(string $name): bool
     {
-        $id = $att->getLabelId($name, false);
+        $id = $this->getLabelId($name, false);
 
         return ($id && $this->hasData($id)) ? true : false;
     }
@@ -54,41 +72,41 @@ class ValueLabel extends ValueBase
         return ($this->hasData($id)) ? true : false;
     }
 
-    public function addLabelName(string $name, object $att): object
+    public function addLabelName(string $name): object
     {
-        $id = $att->getLabelId($name, true);
+        $id = $this->getLabelId($name, true);
 
         return $this->addLabelId($id);
     }
 
-    public function addLabelNames(array $names, object $att): object
+    public function addLabelNames(array $names): object
     {
         foreach ($names as $name) {
-            $this->addLabelName($name, $att);
+            $this->addLabelName($name);
         }
 
         return $this;
     }
 
-    public function removeLabelName(string $name, object $att): object
+    public function removeLabelName(string $name): object
     {
-        $id = $att->getLabelId($name, true);
+        $id = $this->getLabelId($name, true);
 
         return $this->removeLabelId($id);
     }
 
-    public function removeLabelNames(array $names, object $att): object
+    public function removeLabelNames(array $names): object
     {
         foreach ($names as $name) {
-            $this->removeLabelName($name, $att);
+            $this->removeLabelName($name);
         }
 
         return $this;
     }
 
-    public function setLabelName(string $name, object $att): object
+    public function setLabelName(string $name): object
     {
-        $id = $att->getLabelId($name, true);
+        $id = $this->getLabelId($name, true);
 
         return $this->setLabelId($id);
     }
@@ -102,7 +120,7 @@ class ValueLabel extends ValueBase
 
     public function addLabelId(string $id): object
     {
-        $val = array_merge($this->data, $id);
+        $val = array_merge($this->data, [$id]);
 
         return $this->setData($val);
     }
@@ -110,5 +128,18 @@ class ValueLabel extends ValueBase
     public function setLabelId(string $id): object
     {
         return $this->setData([$id]);
+    }
+
+    public function getLabelId($name, $error = false): ?string
+    {
+        if (in_array($name, $this->label_map)) {
+            return array_search($name, $this->label_map);
+        }
+
+        if ($error) {
+            throw new \Exception("Unable to find \$label for $name from attr #{$this->attribute->id}");
+        }
+
+        return false;
     }
 }

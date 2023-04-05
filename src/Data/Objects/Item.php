@@ -72,7 +72,7 @@ class Item extends ObjectBase
         $this->setAttributes($atts);
     }
 
-    public function setAttributes(array|object $atts, $new = true): object
+    public function setAttributes(array|object $atts): object
     {
         if (is_object($atts)) {
             $atts = $atts->toArray();
@@ -89,19 +89,15 @@ class Item extends ObjectBase
                 throw new Exception("Unable to find Attribute by ID ($aid) in att list for value #{$val->id}");
             }
 
-            $val->attribute = $this->attributes[$aid];
-
-            if ($new) {
+            if (get_class($val) === 'stdClass') {
+                $val->attribute = $this->attributes[$aid];
                 $val = $this->convertInfValObj($val, $val->attribute->type);
+            } else {
+                $val->setAttribute($this->attributes[$aid]);
             }
         }
 
         return $this;
-    }
-
-    public function resetAttributes(object|array $atts): object
-    {
-        return $this->setAttributes($atts, false);
     }
 
     public function convertInfValObj(object $val, string $type): object
