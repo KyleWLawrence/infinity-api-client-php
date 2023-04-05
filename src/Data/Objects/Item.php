@@ -30,6 +30,22 @@ class Item extends ObjectBase
         $this->setAttributesOnStart($attributes);
     }
 
+    public function toStdObj(): object
+    {
+        $set = [];
+        foreach ($this->object_keys as $key) {
+            if ($key === 'values') {
+                foreach ($this->values as $key => $value) {
+                    $set['values'][$key] = $value->toStdObj();
+                }
+            } else {
+                $set[$key] = $this->$key;
+            }
+        }
+
+        return (object) $set;
+    }
+
     public function getValues(): array
     {
         return $this->values;

@@ -24,6 +24,24 @@ class ValueLabel extends ValueBase
         return $names;
     }
 
+    public function getLabelName($throwError = false): string
+    {
+        if ($throwError === true && count($this->data) > 1) {
+            throw new \Exception(count($this->data)." label values on value ($this->id) for item_id ($this->item_id) and attribute_id ($this->attribute_id)");
+        }
+
+        $name = '';
+        foreach ($this->data as $id) {
+            $match = array_search($id, array_column($this->attribute->settings->labels, 'id'));
+            if (is_int($match)) {
+                $name = $this->attribute->settings->labels[$match]->name;
+                break;
+            }
+        }
+
+        return $name;
+    }
+
     public function hasLabelName(string $name, object $att): bool
     {
         $id = $att->getLabelId($name, false);
