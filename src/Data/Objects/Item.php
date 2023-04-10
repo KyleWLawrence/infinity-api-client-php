@@ -159,6 +159,7 @@ class Item extends ObjectBase
     public function getUpdateSet()
     {
         $this->unsetEmptyVals();
+        $this->checkDuplicateVals();
 
         return [
             'folder_id' => $this->folder_id,
