@@ -21,8 +21,8 @@ class References extends ListBase
 
         $list = [];
         foreach ($this->list as $ref) {
-            if ($ref[$dir] === $iid && $aid === $ref['attribute_id']) {
-                $list[] = ($key === 'id') ? $ref[$return] : $ref;
+            if ($ref->$dir === $iid && $aid === $ref->attribute_id) {
+                $list[] = ($key === 'id') ? $ref->$return : $ref;
             }
         }
 

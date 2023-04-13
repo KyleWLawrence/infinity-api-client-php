@@ -180,6 +180,15 @@ class Item extends ObjectBase
         return $set;
     }
 
+    public function removeVal($id): void
+    {
+        $valMatch = array_search($id, array_column($this->values, 'id'));
+
+        if (is_int($valMatch)) {
+            unset($this->values[$valMatch]);
+        }
+    }
+
     protected function unsetEmptyVals(): void
     {
         $unset = false;

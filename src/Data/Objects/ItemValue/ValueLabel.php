@@ -29,30 +29,31 @@ class ValueLabel extends ValueBase
         return $this;
     }
 
-    public function getLabelNames(): array
+    public function getLabelNames(?object &$att = null): array
     {
         $names = [];
         foreach ($this->data as $id) {
-            $match = array_search($id, array_column($this->attribute->settings->labels, 'id'));
-            if (is_int($match)) {
-                $names[$id] = $this->attribute->settings->labels[$match]->name;
+            $name = $this->getLabelNameFromid($id, false, $att);
+
+            if (! is_null($name)) {
+                $names[$id] = $name;
             }
         }
 
         return $names;
     }
 
-    public function getLabelName($throwError = false): string
+    public function getLabelName($multipleError = false, ?object &$att = null): ?string
     {
-        if ($throwError === true && count($this->data) > 1) {
+        if ($multipleError === true && count($this->data) > 1) {
             throw new \Exception(count($this->data)." label values on value ($this->id) for item_id ($this->item_id) and attribute_id ($this->attribute_id)");
         }
 
-        $name = '';
+        $name = null;
         foreach ($this->data as $id) {
-            $match = array_search($id, array_column($this->attribute->settings->labels, 'id'));
-            if (is_int($match)) {
-                $name = $this->attribute->settings->labels[$match]->name;
+            $name = $this->getLabelNameFromid($id, false, $att);
+
+            if (! is_null($name)) {
                 break;
             }
         }
@@ -60,9 +61,33 @@ class ValueLabel extends ValueBase
         return $name;
     }
 
-    public function hasLabelName(string $name): bool
+    public function getLabelNameFromId(string $id, $throwError = false, ?object &$att = null): ?string
     {
-        $id = $this->getLabelId($name, false);
+        if (is_object($att)) {
+            return $att->getLabelName($id, $throwError);
+        } else {
+            $match = array_search($id, array_column($this->attribute->settings->labels, 'id'));
+
+            return (is_int($match)) ? $this->attribute->settings->labels[$match]->name : null;
+        }
+    }
+
+    public function removeOldLabelIds(?object &$att = null): object
+    {
+        foreach ($this->data as $id) {
+            $name = $this->getLabelNameFromid($id, false, $att);
+
+            if (is_null($name)) {
+                $this->removeLabelId($id);
+            }
+        }
+
+        return $this;
+    }
+
+    public function hasLabelName(string $name, ?object &$att = null): bool
+    {
+        $id = $this->getLabelId($name, false, $att);
 
         return ($id && $this->hasData($id)) ? true : false;
     }
@@ -72,41 +97,41 @@ class ValueLabel extends ValueBase
         return ($this->hasData($id)) ? true : false;
     }
 
-    public function addLabelName(string $name): object
+    public function addLabelName(string $name, ?object &$att = null): object
     {
-        $id = $this->getLabelId($name, true);
+        $id = $this->getLabelId($name, true, $att);
 
         return $this->addLabelId($id);
     }
 
-    public function addLabelNames(array $names): object
+    public function addLabelNames(array $names, ?object &$att = null): object
     {
         foreach ($names as $name) {
-            $this->addLabelName($name);
+            $this->addLabelName($name, $att);
         }
 
         return $this;
     }
 
-    public function removeLabelName(string $name): object
+    public function removeLabelName(string $name, ?object &$att = null): object
     {
-        $id = $this->getLabelId($name, true);
+        $id = $this->getLabelId($name, false, $att);
 
-        return $this->removeLabelId($id);
+        return (is_null($id)) ? $this : $this->removeLabelId($id);
     }
 
-    public function removeLabelNames(array $names): object
+    public function removeLabelNames(array $names, ?object &$att = null): object
     {
         foreach ($names as $name) {
-            $this->removeLabelName($name);
+            $this->removeLabelName($name, $att);
         }
 
         return $this;
     }
 
-    public function setLabelName(string $name): object
+    public function setLabelName(string $name, ?object &$att = null): object
     {
-        $id = $this->getLabelId($name, true);
+        $id = $this->getLabelId($name, true, $att);
 
         return $this->setLabelId($id);
     }
@@ -130,9 +155,11 @@ class ValueLabel extends ValueBase
         return $this->setData([$id]);
     }
 
-    public function getLabelId($name, $error = false): ?string
+    public function getLabelId($name, $error = false, ?object &$att = null): ?string
     {
-        if (in_array($name, $this->label_map)) {
+        if (is_object($att)) {
+            return $att->getLabelId($name, $error);
+        } elseif (in_array($name, $this->label_map)) {
             return array_search($name, $this->label_map);
         }
 
@@ -140,6 +167,6 @@ class ValueLabel extends ValueBase
             throw new \Exception("Unable to find \$label for $name from attr #{$this->attribute->id}");
         }
 
-        return false;
+        return null;
     }
 }

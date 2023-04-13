@@ -61,18 +61,23 @@ if (! function_exists('conv_inf_obj')) {
 
         switch($type) {
             case 'item':
+            case 'items':
                 $list = new Items($array, $boardId, $atts);
                 break;
             case 'attribute':
+            case 'attributes':
                 $list = new Attributes($array, $boardId);
                 break;
             case 'reference':
+            case 'references':
                 $list = new References($array, $boardId);
                 break;
             case 'view':
+            case 'views':
                 $list = new Views($array, $boardId);
                 break;
             case 'folder':
+            case 'folders':
                 $list = new Folders($array, $boardId);
                 break;
             default:

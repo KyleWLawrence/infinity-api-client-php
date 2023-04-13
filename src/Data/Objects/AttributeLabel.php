@@ -17,13 +17,13 @@ class AttributeLabel extends Attribute
         $this->label_map = array_combine(array_column($this->settings->labels, 'id'), array_column($this->settings->labels, 'name'));
     }
 
-    public function getLabelName(string $id): string
+    public function getLabelName(string $id, $throwError = true): ?string
     {
-        if (! isset($this->label_map[$id])) {
+        if (! isset($this->label_map[$id]) && $throwError) {
             throw new Exception("Unable to find \$label for $id from attr #{$this->id}");
         }
 
-        return $this->label_map[$id];
+        return (isset($this->label_map[$id])) ? $this->label_map[$id] : null;
     }
 
     public function getLabelNames(array $ids): array
@@ -43,10 +43,10 @@ class AttributeLabel extends Attribute
             throw new Exception("Unable to find \$label for $name from attr #{$this->id}");
         }
 
-        return false;
+        return null;
     }
 
-    public function getLabelIdBySet($set, $error = false): string|bool
+    public function getLabelIdBySet($set, $error = false): ?string
     {
         if (! $this->hasKeys($set, ['id', 'name'])) {
             throw new Exception('Missing Parameter for mandatory `id` and `name` on set: '.implode('|', $set));
@@ -62,7 +62,7 @@ class AttributeLabel extends Attribute
         ], $set);
 
         $nameList = array_column($this->settings->labels, 'name');
-        $label = false;
+        $label = null;
 
         foreach ($nameList as $key => $name) {
             if (strpos($name, $set['id']) !== false) {
@@ -71,7 +71,7 @@ class AttributeLabel extends Attribute
             }
         }
 
-        if ($label === false && $error === false) {
+        if ($label === null && $error === false) {
             throw new Exception("Unable to find \$label for {$set['name']} ({$set['id']}) from attr #{$this->id}");
         }
 
