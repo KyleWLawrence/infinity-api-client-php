@@ -2,6 +2,9 @@
 
 namespace KyleWLawrence\Infinity\Data\Objects\ItemValue;
 
+use Exception;
+use Ramsey\Uuid\Uuid;
+
 class ValueLabel extends ValueBase
 {
     protected array $label_map;
@@ -129,9 +132,9 @@ class ValueLabel extends ValueBase
         return $this;
     }
 
-    public function setLabelName(string $name, ?object &$att = null): object
+    public function setLabelName(?string $name, ?object &$att = null): object
     {
-        $id = $this->getLabelId($name, true, $att);
+        $id = (! $name) ? null : $this->getLabelId($name, true, $att);
 
         return $this->setLabelId($id);
     }
@@ -145,14 +148,18 @@ class ValueLabel extends ValueBase
 
     public function addLabelId(string $id): object
     {
+        if (! Uuid::isValid($id)) {
+            throw new Exception("ID ($id) for value #$this->id on item #$this->item_id is not a valid UUID for a label value");
+        }
+
         $val = array_merge($this->data, [$id]);
 
         return $this->setData($val);
     }
 
-    public function setLabelId(string $id): object
+    public function setLabelId(?string $id): object
     {
-        return $this->setData([$id]);
+        return (! $id) ? $this->setData([]) : $this->setData([$id]);
     }
 
     public function getLabelId($name, $error = false, ?object &$att = null): ?string

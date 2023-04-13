@@ -28,6 +28,7 @@
         "squizlabs/php_codesniffer": "2.*",
         "phpmd/phpmd": "@stable",
         "fzaninotto/faker": ">=1.5.0",
+        "ramsey/uuid": "4.*",
         "psy/psysh": "^0.11"
     },
     "autoload": {
