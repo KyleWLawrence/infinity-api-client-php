@@ -162,6 +162,7 @@ class AttributeLabel extends Attribute
 
         if (is_int($key)) {
             unset($this->settings->labels[$key]);
+            $this->settings->labels = array_values($this->settings->labels);
             $this->updated = true;
         }
 
@@ -174,6 +175,7 @@ class AttributeLabel extends Attribute
 
         if (is_int($key)) {
             unset($this->settings->labels[$key]);
+            $this->settings->labels = array_values($this->settings->labels);
             $this->updated = true;
         }
 
