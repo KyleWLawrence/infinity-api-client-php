@@ -101,7 +101,7 @@ class AttributeLabel extends Attribute
         $label = (object) [
             'name' => $name,
             'id' => $this->generateId(),
-            'color' => ($color === null) ? $this->generateLightHex() : $color,
+            'color' => ($color === null) ? self::generateLightHex() : $color,
         ];
 
         $this->label_map[$label->id] = $label->name;
@@ -124,9 +124,9 @@ class AttributeLabel extends Attribute
 
     public function genOrGetLabelId($name): string
     {
-        $id = $this->getLabelId($name);
+        $id = $this->getLabelId($name, false);
 
-        if ($name === false) {
+        if ($id === null) {
             $id = $this->genLabel($name);
         }
 
@@ -154,5 +154,29 @@ class AttributeLabel extends Attribute
         }
 
         return "#{$dt}";
+    }
+
+    public function removeLabelName(string $name): object
+    {
+        $key = array_search($name, array_column($this->settings->labels, 'name'));
+
+        if (is_int($key)) {
+            unset($this->settings->labels[$key]);
+            $this->updated = true;
+        }
+
+        return $this;
+    }
+
+    public function removeLabelId(string $id): object
+    {
+        $key = array_search($id, array_column($this->settings->labels, 'id'));
+
+        if (is_int($key)) {
+            unset($this->settings->labels[$key]);
+            $this->updated = true;
+        }
+
+        return $this;
     }
 }

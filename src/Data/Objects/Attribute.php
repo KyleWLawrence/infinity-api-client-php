@@ -71,7 +71,17 @@ class Attribute extends ObjectBase
     public function setSettings($set): object
     {
         foreach ($set as $key => $val) {
-            $this->setVar($key, $val);
+            $this->setSetting($key, $val);
+        }
+
+        return $this;
+    }
+
+    protected function setSetting(string $key, $val): object
+    {
+        if ($this->settings->$key !== $val) {
+            $this->$key = $val;
+            $this->updated = true;
         }
 
         return $this;

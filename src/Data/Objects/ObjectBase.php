@@ -104,15 +104,15 @@ class ObjectBase
          return $this->board_id;
      }
 
-   protected function setVar(string $key, $val): object
-   {
-       if ($this->$key !== $val) {
-           $this->$key = $val;
-           $this->updated = true;
-       }
+    protected function setVar(string $key, $val): object
+    {
+        if ($this->$key !== $val) {
+            $this->$key = $val;
+            $this->updated = true;
+        }
 
-       return $this;
-   }
+        return $this;
+    }
 
     public function generateId(): string
     {
