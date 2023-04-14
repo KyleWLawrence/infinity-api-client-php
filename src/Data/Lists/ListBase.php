@@ -178,7 +178,7 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
         return $list;
     }
 
-    public function add($item): object
+    public function add(object $item): object
     {
         $itemKey = array_search($item->id, $this->getColumn('id'));
         if (! is_int($itemKey)) {
@@ -186,6 +186,13 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
         } else {
             $this->list[$itemKey] = $item;
         }
+
+        return $this;
+    }
+
+    public function combine(array $list): object
+    {
+        $this->list = array_merge($this->list, $list);
 
         return $this;
     }

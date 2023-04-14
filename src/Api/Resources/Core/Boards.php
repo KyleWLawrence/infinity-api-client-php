@@ -52,6 +52,7 @@ class Boards extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
+            'getAllLoop' => 'boards',
             'getAll' => 'boards',
             'get' => 'board/{id}',
             'create' => 'boards',

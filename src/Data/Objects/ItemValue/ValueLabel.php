@@ -162,6 +162,11 @@ class ValueLabel extends ValueBase
         return (! $id) ? $this->setData([]) : $this->setData([$id]);
     }
 
+    public function setLabelIds(array $ids): object
+    {
+        return $this->setData($ids);
+    }
+
     public function getLabelId($name, $error = false, ?object &$att = null): ?string
     {
         if (is_object($att)) {
