@@ -19,6 +19,7 @@ class Items extends ResourceAbstract
     use Defaults {
         get as traitGet;
         getAll as traitGetAll;
+        getAllLoop as traitGetAllLoop;
     }
     use ProcessReturn;
 
@@ -79,6 +80,15 @@ class Items extends ResourceAbstract
         }
 
         return $this->traitGetAll($params);
+    }
+
+    public function getAllLoop(array $params = [])
+    {
+        if (! isset($params['expand[]']) || empty($params['expand[]'])) {
+            $params['expand[]'] = 'values.attribute';
+        }
+
+        return $this->traitGetAllLoop($params);
     }
 
     public function setAttributes(null|object|array $atts): object
