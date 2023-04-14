@@ -71,7 +71,7 @@ class AttributeLabel extends Attribute
             }
         }
 
-        if ($label === null && $error === false) {
+        if ($label === null && $error === true) {
             throw new Exception("Unable to find \$label for {$set['name']} ({$set['id']}) from attr #{$this->id}");
         }
 
@@ -87,7 +87,7 @@ class AttributeLabel extends Attribute
         $name = "{$set['name']} ({$set['id']})";
         $id = $this->getLabelIdBySet($set, false);
 
-        if ($id === false) {
+        if ($id === null) {
             $id = $this->genLabel($name);
         } elseif ($this->getLabelName($id) !== $name) {
             $this->setLabelName($name, $id);
@@ -161,9 +161,14 @@ class AttributeLabel extends Attribute
         $key = array_search($name, array_column($this->settings->labels, 'name'));
 
         if (is_int($key)) {
+            $id = $this->settings->labels[$key];
             unset($this->settings->labels[$key]);
             $this->settings->labels = array_values($this->settings->labels);
             $this->updated = true;
+
+            if (in_array($id, $this->default_data)) {
+                $this->setVar('default_data', []);
+            }
         }
 
         return $this;
@@ -177,6 +182,10 @@ class AttributeLabel extends Attribute
             unset($this->settings->labels[$key]);
             $this->settings->labels = array_values($this->settings->labels);
             $this->updated = true;
+
+            if (in_array($id, $this->default_data)) {
+                $this->setVar('default_data', []);
+            }
         }
 
         return $this;

@@ -78,7 +78,7 @@ class ValueLabel extends ValueBase
     public function removeOldLabelIds(?object &$att = null): object
     {
         foreach ($this->data as $id) {
-            $name = $this->getLabelNameFromid($id, false, $att);
+            $name = $this->getLabelNameFromId($id, false, $att);
 
             if (is_null($name)) {
                 $this->removeLabelId($id);

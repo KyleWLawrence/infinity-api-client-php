@@ -17,7 +17,7 @@ class Item extends ObjectBase
 
     public string $object = 'item';
 
-    protected array $values;
+    protected array $values = [];
 
     public $has_atts = false;
 

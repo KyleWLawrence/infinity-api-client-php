@@ -81,10 +81,12 @@ class Items extends ResourceAbstract
         return $this->traitGetAll($params);
     }
 
-    public function setAttributes(object|array $atts): object
+    public function setAttributes(null|object|array $atts): object
     {
         if (is_object($atts)) {
             $atts = $atts->toArray();
+        } elseif (is_null($atts)) {
+            return $this;
         }
 
         $atts = array_combine(array_column($atts, 'id'), $atts);

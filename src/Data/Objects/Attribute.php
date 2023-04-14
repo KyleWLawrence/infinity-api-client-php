@@ -38,7 +38,7 @@ class Attribute extends ObjectBase
         'vote' => 'int',
     ];
 
-    protected function getUpdateSet()
+    public function getUpdateSet()
     {
         return [
             'name' => $this->name,
@@ -77,7 +77,7 @@ class Attribute extends ObjectBase
         return $this;
     }
 
-    protected function setSetting(string $key, $val): object
+    public function setSetting(string $key, $val): object
     {
         if ($this->settings->$key !== $val) {
             $this->$key = $val;
