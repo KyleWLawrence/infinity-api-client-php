@@ -149,7 +149,7 @@ class ValueLabel extends ValueBase
     public function addLabelId(string $id): object
     {
         if (! Uuid::isValid($id)) {
-            throw new Exception("ID ($id) for value #$this->id on item #$this->item_id is not a valid UUID for a label value");
+            throw new Exception("ID ($id) for value #$this->id for att #$this->attribute_id not a valid UUID for a label value");
         }
 
         $val = array_merge($this->data, [$id]);

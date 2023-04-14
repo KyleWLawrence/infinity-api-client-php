@@ -110,7 +110,7 @@ class ValueBase
 
     public function generateId(): string
     {
-        return Uuid::uuid4();
+        return Uuid::uuid4()->toString();
     }
 
     public function getData()

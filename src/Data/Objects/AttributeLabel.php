@@ -52,8 +52,8 @@ class AttributeLabel extends Attribute
             throw new Exception('Missing Parameter for mandatory `id` and `name` on set: '.implode('|', $set));
         }
 
-        if (in_array($set->id, $this->label_map)) {
-            return array_search($set->id, $this->label_map);
+        if (in_array($set['id'], $this->label_map)) {
+            return array_search($set['id'], $this->label_map);
         }
 
         $set = array_merge([
