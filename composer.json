@@ -2,7 +2,7 @@
     "name": "kylewlawrence/infinity-api-client-php",
     "type": "library",
     "description": "Infinity API PHP SDK",
-    "minimum-stability": "alpha",
+    "minimum-stability": "beta",
     "keywords": [
         "infinity",
         "php-sdk",
