@@ -17,9 +17,9 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^7.0",
-        "guzzlehttp/psr7": "^2.0",
-        "php": ">=8.1",
+        "guzzlehttp/guzzle": ">=7.0",
+        "guzzlehttp/psr7": ">=2.0",
+        "php": ">=8.2",
         "doctrine/inflector": "^2.0",
         "ramsey/uuid": ">=4.7"
     },
@@ -28,7 +28,6 @@
         "squizlabs/php_codesniffer": "2.*",
         "phpmd/phpmd": "@stable",
         "fzaninotto/faker": ">=1.5.0",
-        "ramsey/uuid": "4.*",
         "psy/psysh": "^0.11"
     },
     "autoload": {

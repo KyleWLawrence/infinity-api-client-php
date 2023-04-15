@@ -19,7 +19,7 @@ trait GetAllLoop
      */
     public function getAllLoop(array $params = [], $routeKey = 'getAll')
     {
-        $params = array_merge($params,['limit' => 100]);
+        $params = array_merge($params, ['limit' => 100]);
 
         try {
             $route = $this->getRoute($routeKey, $params);
@@ -53,7 +53,7 @@ trait GetAllLoop
         }
 
         $response->data = $data;
-        
-        return $this->processReturn( $response, 'list', 'data' );
+
+        return $this->processReturn($response, 'list', 'data');
     }
 }

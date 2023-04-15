@@ -54,7 +54,6 @@ class Items extends ResourceAbstract
     {
         $this->setRoutes(
             [
-                'getAllLoop' => 'boards/{board_id}/items',
                 'getAll' => 'boards/{board_id}/items',
                 'get' => 'boards/{board_id}/items/{id}',
                 'create' => 'boards/{board_id}/items',

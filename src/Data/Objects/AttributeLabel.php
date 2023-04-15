@@ -133,6 +133,19 @@ class AttributeLabel extends Attribute
         return $id;
     }
 
+    public function genLabels(array $names): object
+    {
+        foreach ($names as $name) {
+            $id = $this->getLabelId($name, false);
+
+            if ($id === null) {
+                $id = $this->genLabel($name);
+            }
+        }
+
+        return $this;
+    }
+
     public function getDefaultName($name = false): string
     {
         if (! empty($this->default_data)) {
