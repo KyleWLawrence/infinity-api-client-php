@@ -85,14 +85,14 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
         return array_column($this->list, $column);
     }
 
-    public function getById(string $id): object
+    public function getById(string $id, bool $error = true): ?object
     {
         $itemKey = array_search($id, $this->getColumn('id'));
-        if (! is_int($itemKey)) {
+        if (! is_int($itemKey) && $error === true) {
             throw new Exception("Unable to find item id ($id) in list");
         }
 
-        return $this->list[$itemKey];
+        return (is_int($itemKey)) ? $this->list[$itemKey] : null;
     }
 
     public function getByName(string $search, bool $full = true): ?object
