@@ -24,6 +24,13 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
         $this->setObjects($apiObjects);
     }
 
+    public function setNameKey(string $key): object
+    {
+        $this->name_key = $key;
+
+        return $this;
+    }
+
     public function all(): array
     {
         return $this->list;
