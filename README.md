@@ -23,18 +23,19 @@ To install run `composer require kylewlawrence/infinity-api-client-php`
 
 ## Configuration
 
-Configuration is done through an instance of `Infinity\Api\HttpClient`.
+Configuration is done through an instance of `KyleWLawrence\Infinity\Api\HttpClient`.
 The block is mandatory and if not passed, an error will be thrown.
 
 ``` php
 // load Composer
 require 'vendor/autoload.php';
 
-use Infinity\API\HttpClient as InfinityAPI;
+use KyleWLawrence\Infinity\Api\HttpClient as InfinityAPI;
 
+$workspace = 1234; // replace this with your Infinity workspace ID
 $bearer     = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv"; // replace this with your Infinity Personal Access/Bearer token
 
-$client = new InfinityAPI();
+$client = new InfinityAPI($workspace);
 $client->setAuth('bearer', ['bearer' => $bearer]);
 ```
 
@@ -76,18 +77,18 @@ $client->getValidSubResrouces()
 
 // The above example will output something like:
 [
-    "boards" => "Infinity\Api\Resources\Core\Boards",
-    "profile" => "Infinity\Api\Resources\Core\Profile",
-    "attachments" => "Infinity\Api\Resources\Core\Attachments",
-    "users" => "Infinity\Api\Resources\Core\Users",
-    "workspaces" => "Infinity\Api\Resources\Core\Workspaces",
+    "boards" => "KyleWLawrence\Infinity\Api\Resources\Core\Boards",
+    "profile" => "KyleWLawrence\Infinity\Api\Resources\Core\Profile",
+    "attachments" => "KyleWLawrence\Infinity\Api\Resources\Core\Attachments",
+    "users" => "KyleWLawrence\Infinity\Api\Resources\Core\Users",
+    "workspaces" => "KyleWLawrence\Infinity\Api\Resources\Core\Workspaces",
 ]
 
 // Most available subresources are on the boards class, accessible by:
 $client->boards()->getValidSubResources()
 
 // These are methods/classes that can be chained to the client. For instance:
-// For instance, "boards" => "Infinity\Api\Resources\Core\Boards", can be used as $client->boards()
+// For instance, "boards" => "KyleWLawrence\Infinity\Api\Resources\Core\Boards", can be used as $client->boards()
 
 // To find the chained methods available to the class, now do:
 $client->boards()->getRoutes()
@@ -121,7 +122,7 @@ Some of the allowed options include
 
 ### Retrying Requests
 
-Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `Infinity\Api\HttpClient` 
+Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `KyleWLawrence\Infinity\Api\HttpClient` 
 retries: 
 * timeout requests
 * those that throw `Psr\Http\Message\RequestInterface\ConnectException:class`

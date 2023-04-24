@@ -111,7 +111,7 @@ class AttributeLabel extends Attribute
         return $label->id;
     }
 
-    public function setLabelName($name, $id): void
+    public function setLabelName(string $name, string $id): object
     {
         $labelKey = array_search($id, array_column($this->settings->labels, 'id'));
 
@@ -120,6 +120,46 @@ class AttributeLabel extends Attribute
             $this->label_map[$id] = $name;
             $this->updated = true;
         }
+
+        return $this;
+    }
+
+    public function renameLabel(string $newName, string $oldName, bool $error = false): object
+    {
+        $labelKey = array_search($oldName, array_column($this->settings->labels, 'name'));
+
+        if (! is_int($labelKey)) {
+            if ($error) {
+                throw new Exception("Unable to find old Label '$oldName' to replace with '$newName' on Attribute $this->id");
+            }
+
+            return $this;
+        }
+
+        if ($this->settings->labels[$labelKey]->name !== $newName) {
+            $this->settings->labels[$labelKey]->name = $newName;
+            $this->label_map[$this->settings->labels[$labelKey]->id] = $newName;
+            $this->updated = true;
+        }
+
+        return $this;
+    }
+
+    public function renameLabels(array $newNames, array $oldNames, bool $error = false): object
+    {
+        if (count($newNames) !== count($oldNames)) {
+            throw new Exception('Different count for renaming labels. NewName list ('.implode(', ', $newNames).') vs OldName list ('.implode(', ', $oldNames).') on Attribute '.$this->id);
+        }
+
+        $i = 0;
+        $newNames = array_values($newNames);
+        $oldNames = array_values($oldNames);
+        foreach ($newNames as $newName) {
+            $oldName = $oldNames[$i++];
+            $this->renameLabel($newName, $oldName, $error);
+        }
+
+        return $this;
     }
 
     public function genOrGetLabelId($name): string
