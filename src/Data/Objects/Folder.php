@@ -2,8 +2,12 @@
 
 namespace KyleWLawrence\Infinity\Data\Objects;
 
+use KyleWLawrence\Infinity\Data\Objects\Traits\Settings;
+
 class Folder extends ObjectBase
 {
+    use Settings;
+
     protected array $attribute_ids = [];
 
     protected ?string $parent_id = null;

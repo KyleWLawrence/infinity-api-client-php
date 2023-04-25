@@ -2,8 +2,12 @@
 
 namespace KyleWLawrence\Infinity\Data\Objects;
 
+use KyleWLawrence\Infinity\Data\Objects\Traits\Settings;
+
 class Attribute extends ObjectBase
 {
+    use Settings;
+
     protected string|bool|array|null $default_data = null;
 
     protected string $name;

@@ -2,8 +2,12 @@
 
 namespace KyleWLawrence\Infinity\Data\Objects;
 
+use KyleWLawrence\Infinity\Data\Objects\Traits\Settings;
+
 class View extends ObjectBase
 {
+    use Settings;
+
     protected string $name;
 
     protected object $settings;
