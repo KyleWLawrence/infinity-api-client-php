@@ -17,6 +17,40 @@ class AttributeLabel extends Attribute
         $this->label_map = array_combine(array_column($this->settings->labels, 'id'), array_column($this->settings->labels, 'name'));
     }
 
+    protected function sortSpecialLabels(array $labels): array
+    {
+        $otherValKey = array_search('Other', array_column($labels, 'name'));
+        $count = count($labels);
+
+        if (is_int($otherValKey) && $otherValKey !== $count) {
+            $set = $labels[$otherValKey];
+            unset($labels[$otherValKey]);
+            $labels[] = $set;
+        }
+
+        return $labels;
+    }
+
+    public function sortLabels(bool $sortSpecial = true): object
+    {
+        $key = 'name';
+        $oldLabels = $this->settings->labels;
+
+        usort($this->settings->labels, function ($a, $b) use ($key) {
+            return (is_array($a)) ? strcmp($a[$key], $b[$key]) : strcmp($a->$key, $b->$key);
+        });
+
+        if ($sortSpecial) {
+            $this->settings->labels = $this->sortSpecialLabels($this->settings->labels);
+        }
+
+        if ($this->settings->labels !== $oldLabels) {
+            $this->updated = true;
+        }
+
+        return $this;
+    }
+
     public function getLabelName(string $id, $throwError = true): ?string
     {
         if (! isset($this->label_map[$id]) && $throwError) {

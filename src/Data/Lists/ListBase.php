@@ -55,11 +55,11 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
     protected function setObjects($apiObjects): void
     {
         foreach ($apiObjects as $obj) {
-            if (isset($obj->deleted) && $obj->deleted === true) {
-                LogIt::reportWarning("Unexpected deleted item: $obj->id");
-            }
-
             if (get_class($obj) === 'stdClass') {
+                if (isset($obj->deleted) && $obj->deleted === true) {
+                    LogIt::reportWarning("Unexpected deleted item: $obj->id");
+                }
+
                 $this->list[] = conv_inf_obj($obj, $this->board_id);
             } else {
                 $this->list[] = $obj;

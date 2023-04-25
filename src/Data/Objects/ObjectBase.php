@@ -11,31 +11,29 @@ use Ramsey\Uuid\Uuid;
 #[\AllowDynamicProperties]
 class ObjectBase
 {
-    public string|bool|array|null $default_data;
+    protected array $required = [];
 
-    public float $sort_order;
+    protected array $updateVars = [];
 
-    public string $type;
+    protected ?string $id = null;
 
-    public string $id;
+    protected string $object;
 
-    public string $object;
+    protected ?int $created_by = null;
+
+    protected ?string $created_at = null;
+
+    protected bool $deleted = false;
 
     protected string $obj_name;
 
     protected string $obj_name_plural;
 
-    public string $created_at;
-
-    public bool $deleted = false;
-
     protected bool $api_updated = false;
 
     protected bool $api_created = false;
 
-    public bool $api_deleted = false;
-
-    public ?int $created_by;
+    protected bool $api_deleted = false;
 
     protected string $parent_resource_id_key;
 
@@ -74,6 +72,32 @@ class ObjectBase
         }
     }
 
+    public function __set($key, $value)
+    {
+        if (in_array($key, $this->update_vars)) {
+            $this->setVar($key, $value);
+        }
+    }
+
+    public function __get($key)
+    {
+        if (in_array($key, $this->update_vars) || in_array($key, $this->object_keys)) {
+            return $this->$key;
+        }
+    }
+
+    public function getUpdateSet()
+    {
+        $set = [];
+        foreach ($this->updateVars as $key) {
+            if (isset($this->$key)) {
+                $set[] = $this->$key;
+            }
+        }
+
+        return $set;
+    }
+
     public function toStdObj(): object
     {
         $set = [];
@@ -82,6 +106,12 @@ class ObjectBase
         }
 
         return (object) $set;
+    }
+
+    protected function resetObjectVars(object $apiObject): void
+    {
+        $this->apiObject = $apiObject;
+        $this->setObjectVars($apiObject);
     }
 
     protected function setObjectVars(object $apiObject): void
@@ -94,19 +124,9 @@ class ObjectBase
         }
     }
 
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
-
-     public function getBoardId(): ?string
-     {
-         return $this->board_id;
-     }
-
     protected function setVar(string $key, $val): object
     {
-        if ($this->$key !== $val) {
+        if (! isset($this->$key) || $this->$key !== $val) {
             $this->$key = $val;
             $this->updated = true;
         }
@@ -129,7 +149,7 @@ class ObjectBase
         return $this->api_created;
     }
 
-    public function isApiDelete(): bool
+    public function isApiDeleted(): bool
     {
         return $this->api_deleted;
     }
@@ -158,9 +178,6 @@ class ObjectBase
         }
     }
 
-    /**
-     * Check that all parameters have been supplied
-     */
     public function hasKeys(array $params, array $mandatory): bool
     {
         for ($i = 0; $i < count($mandatory); $i++) {

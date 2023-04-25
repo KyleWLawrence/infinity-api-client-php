@@ -9,20 +9,22 @@ use KyleWLawrence\Infinity\Data\Objects\ItemValue\ValueLink;
 
 class Item extends ObjectBase
 {
-    public string $name_id;
-
     protected string $folder_id;
 
-    protected ?string $parent_id;
+    protected ?string $parent_id = null;
 
-    public string $object = 'item';
+    protected array $update_vars = ['folder_id', 'values', 'parent_id'];
+
+    public string $name_id;
+
+    protected string $object = 'item';
 
     protected array $values = [];
 
     public $has_atts = false;
 
     public function __construct(
-        protected object $apiObject,
+        object $apiObject,
         protected ?string $board_id = null,
         protected null|object|array $attributes = null,
     ) {
@@ -134,26 +136,6 @@ class Item extends ObjectBase
         }
 
         return false;
-    }
-
-    public function getFolderId(): string
-    {
-        return $this->folder_id;
-    }
-
-    public function setFolderId($val): object
-    {
-        return $this->setVar('folder_id', $val);
-    }
-
-    public function getParentId(): string
-    {
-        return $this->parent_id;
-    }
-
-    public function setParentId($val): object
-    {
-        return $this->setVar('parent_id', $val);
     }
 
     public function getUpdateSet()
