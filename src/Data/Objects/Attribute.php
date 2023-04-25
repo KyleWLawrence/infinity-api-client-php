@@ -10,7 +10,7 @@ class Attribute extends ObjectBase
 
     protected object $settings;
 
-    protected float $sort_order;
+    protected ?float $sort_order;
 
     protected string $type;
 

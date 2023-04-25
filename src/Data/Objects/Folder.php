@@ -12,7 +12,7 @@ class Folder extends ObjectBase
 
     protected string $name;
 
-    protected float $sort_order;
+    protected ?float $sort_order;
 
     protected object $settings;
 

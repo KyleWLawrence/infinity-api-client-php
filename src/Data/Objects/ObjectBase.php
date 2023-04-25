@@ -14,7 +14,7 @@ class ObjectBase
 {
     protected array $required = [];
 
-    protected array $updateVars = [];
+    protected array $update_vars = [];
 
     protected ?string $id = null;
 
@@ -90,9 +90,9 @@ class ObjectBase
     public function getUpdateSet()
     {
         $set = [];
-        foreach ($this->updateVars as $key) {
+        foreach ($this->update_vars as $key) {
             if (isset($this->$key)) {
-                $set[] = $this->$key;
+                $set[$key] = $this->$key;
             }
         }
 
@@ -119,7 +119,7 @@ class ObjectBase
     {
         $vars = (array) $apiObject;
         $this->object_keys = array_keys($vars);
-        $check = (isset($apiObject['deleted']) && $apiObject['deleted'] === true) ? true : false;
+        $check = (isset($apiObject->deleted) && $apiObject->deleted === true) ? true : false;
         $diff = array_diff($this->required, $this->object_keys);
 
         if ($check && ! empty($diff)) {
