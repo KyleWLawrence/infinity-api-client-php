@@ -96,7 +96,7 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
     {
         $itemKey = array_search($id, $this->getColumn('id'));
         if (! is_int($itemKey) && $error === true) {
-            throw new Exception("Unable to find item id ($id) in list");
+            throw new Exception("Unable to find item id ($id) in list ".get_class()." of bid $this->board_id");
         }
 
         return (is_int($itemKey)) ? $this->list[$itemKey] : null;

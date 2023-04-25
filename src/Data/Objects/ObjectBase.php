@@ -83,7 +83,14 @@ class ObjectBase
     public function __get($key)
     {
         if (in_array($key, $this->update_vars) || in_array($key, $this->object_keys)) {
-            return $this->$key;
+            return (isset($this->$key)) ? $this->$key : null;
+        }
+    }
+
+    public function __isset($key)
+    {
+        if (in_array($key, $this->update_vars) || in_array($key, $this->object_keys)) {
+            return isset($this->$key);
         }
     }
 

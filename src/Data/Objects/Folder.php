@@ -16,7 +16,7 @@ class Folder extends ObjectBase
 
     protected object $settings;
 
-    protected string $color;
+    protected ?string $color;
 
     protected array $required = ['name'];
 
