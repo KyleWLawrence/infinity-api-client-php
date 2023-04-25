@@ -6,6 +6,7 @@ use Doctrine\Inflector\CachedWordInflector;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\Rules\English;
 use Doctrine\Inflector\RulesetInflector;
+use Exception;
 use Ramsey\Uuid\Uuid;
 
 #[\AllowDynamicProperties]
@@ -118,6 +119,12 @@ class ObjectBase
     {
         $vars = (array) $apiObject;
         $this->object_keys = array_keys($vars);
+        $check = (isset($apiObject['deleted']) && $apiObject['deleted'] === true) ? true : false;
+        $diff = array_diff($this->required, $this->object_keys);
+
+        if ($check && ! empty($diff)) {
+            throw new Exception("Missing Parameters in create of object '{$this->object}'. Parameters missing: ".implode(', ', $diff));
+        }
 
         foreach ($vars as $key => $var) {
             $this->$key = $var;
