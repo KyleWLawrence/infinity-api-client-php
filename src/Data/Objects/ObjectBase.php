@@ -73,6 +73,14 @@ class ObjectBase
         }
     }
 
+    public function getKeys()
+    {
+        $basic = ($this->board_id) ? ['board_id'] : [];
+        $keys = array_merge($basic, $this->update_vars, $this->object_keys);
+
+        return $keys;
+    }
+
     public function __set($key, $value)
     {
         if (in_array($key, $this->update_vars)) {
@@ -82,14 +90,14 @@ class ObjectBase
 
     public function __get($key)
     {
-        if (in_array($key, $this->update_vars) || in_array($key, $this->object_keys)) {
+        if (in_array($key, $this->getKeys())) {
             return (isset($this->$key)) ? $this->$key : null;
         }
     }
 
     public function __isset($key)
     {
-        if (in_array($key, $this->update_vars) || in_array($key, $this->object_keys)) {
+        if (in_array($key, $this->getKeys())) {
             return isset($this->$key);
         }
     }
