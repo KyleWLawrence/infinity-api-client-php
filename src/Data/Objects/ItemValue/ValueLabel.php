@@ -17,6 +17,18 @@ class ValueLabel extends ValueBase
         $this->label_map = array_combine(array_column($this->attribute->settings->labels, 'id'), array_column($this->attribute->settings->labels, 'name'));
     }
 
+    public function toFlatObj(): object
+    {
+        $set = $this->toStdObj();
+        $names = $this->getLabelNames();
+        $set->settings->labels = [
+            'name_key' => array_flip($names),
+            'id_key' => $names,
+        ];
+
+        return $set;
+    }
+
     public function setData(mixed $data): object
     {
         $data = array_unique($data);

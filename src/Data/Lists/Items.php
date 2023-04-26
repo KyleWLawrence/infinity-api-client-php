@@ -89,22 +89,17 @@ class Items extends ListBase
 
     public function findItemsByLabelName(string $name, string $aid): object
     {
-        if ($this->has_atts === false) {
-            throw new Exception(__FUNCTION__." requires the item list to has_atts to find label $name on aid ($aid)");
-        }
-
         $atts = reset($this->list)->getAttributes();
-        $attKey = array_search($aid, array_column($atts, 'id'));
-        if (! is_int($attKey)) {
+        if (! isset($atts[$aid])) {
             throw new Exception("Unable to find attribute for $aid");
         }
 
-        $labelKey = array_search($name, array_column($atts[$attKey]->settings->labels, 'id'));
+        $labelKey = array_search($name, array_column($atts[$aid]->settings->labels, 'name'));
         if (! is_int($labelKey)) {
             throw new Exception("Unable to find attribute label '$name' on attribute with $aid");
         }
 
-        $id = $atts[$attKey]->settings->labels[$labelKey]->id;
+        $id = $atts[$aid]->settings->labels[$labelKey]->id;
 
         return $this->findItemsByData($id, $aid);
     }

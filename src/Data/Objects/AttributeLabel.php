@@ -17,6 +17,27 @@ class AttributeLabel extends Attribute
         $this->label_map = array_combine(array_column($this->settings->labels, 'id'), array_column($this->settings->labels, 'name'));
     }
 
+    public function toFlatObj(): object
+    {
+        $set = [];
+        foreach ($this->object_keys as $key) {
+            if ($key === 'settings') {
+                $ids = array_column($this->$key->labels, 'id');
+                $names = array_column($this->$key->labels, 'name');
+                $settings = $this->$key;
+                $settings->labels = [
+                    'name_key' => array_combine($names, $ids),
+                    'id_key' => array_combine($ids, $names),
+                ];
+                $set[$key] = $settings;
+            } else {
+                $set[$key] = $this->$key;
+            }
+        }
+
+        return (object) $set;
+    }
+
     protected function sortSpecialLabels(array $labels): array
     {
         $otherValKey = array_search('Other', array_column($labels, 'name'));

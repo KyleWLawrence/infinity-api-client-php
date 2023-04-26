@@ -81,10 +81,19 @@ class ValueBase
     {
         $set = [];
         foreach ($this->object_keys as $key) {
+            if ($key === 'attribute') {
+                continue;
+            }
+
             $set[$key] = $this->$key;
         }
 
         return (object) $set;
+    }
+
+    public function toFlatbj(): object
+    {
+        return $this->toStdObj();
     }
 
     protected function setObjectVars(object $apiObject): void

@@ -124,6 +124,11 @@ class ObjectBase
         return (object) $set;
     }
 
+    public function toFlatObj(): object
+    {
+        return $this->toStdObj();
+    }
+
     protected function resetObjectVars(object $apiObject): void
     {
         $this->apiObject = $apiObject;

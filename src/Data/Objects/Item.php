@@ -48,6 +48,22 @@ class Item extends ObjectBase
         return (object) $set;
     }
 
+    public function toFlatObj(): object
+    {
+        $set = [];
+        foreach ($this->object_keys as $key) {
+            if ($key === 'values') {
+                foreach ($this->values as $key => $value) {
+                    $set['values'][$value->attribute_id] = $value->toFlatObj();
+                }
+            } else {
+                $set[$key] = $this->$key;
+            }
+        }
+
+        return (object) $set;
+    }
+
     public function getValues(): array
     {
         return $this->values;
