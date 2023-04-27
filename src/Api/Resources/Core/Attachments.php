@@ -38,7 +38,6 @@ class Attachments extends ResourceAbstract
      *    'token' - an existing token
      *     'name' - preferred filename
      *
-     * @param  array  $params
      * @return \stdClass | null
      *
      * @throws CustomException
@@ -56,7 +55,7 @@ class Attachments extends ResourceAbstract
             throw new CustomException('File '.$params['file'].' could not be found in '.__METHOD__);
         }
 
-        $response = Http::send(
+        return Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             [
@@ -65,14 +64,11 @@ class Attachments extends ResourceAbstract
                 'file' => $params['file'],
             ]
         );
-
-        return $this->processReturn($response);
     }
 
     /**
      * Create a domain
      *
-     * @param  array  $params
      * @return \stdClass | null
      *
      * @throws ResponseException
@@ -88,11 +84,9 @@ class Attachments extends ResourceAbstract
 
         $route = $this->getRoute(__FUNCTION__);
 
-        $response = $this->client->post(
+        return $this->client->post(
             $route,
             $params
         );
-
-        return $this->processReturn($response);
     }
 }
