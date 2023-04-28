@@ -139,7 +139,7 @@ class ObjectBase
     {
         $vars = (array) $apiObject;
         $this->object_keys = array_keys($vars);
-        $check = (isset($apiObject->deleted) && $apiObject->deleted === true) ? true : false;
+        $check = (isset($apiObject->deleted) && $apiObject->deleted === false) ? true : false;
         $diff = array_diff($this->required, $this->object_keys);
 
         if ($check && ! empty($diff)) {

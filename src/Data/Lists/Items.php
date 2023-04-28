@@ -75,7 +75,7 @@ class Items extends ListBase
                         return true;
                     }
                 } else {
-                    if ($item->getValues()[$key]->getData() === $data) {
+                    if ($item->getValues()[$key]->getData() == $data) {
                         return true;
                     }
                 }
