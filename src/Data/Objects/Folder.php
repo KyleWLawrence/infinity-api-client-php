@@ -26,5 +26,5 @@ class Folder extends ObjectBase
 
     protected array $update_vars = ['name', 'color', 'settings', 'sort_order', 'attribute_ids', 'parent_id'];
 
-    protected string $object = 'folder';
+    protected ?string $object = 'folder';
 }

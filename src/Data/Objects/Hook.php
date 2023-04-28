@@ -12,5 +12,5 @@ class Hook extends ObjectBase
 
     protected array $updateVars = ['url', 'events'];
 
-    protected string $object = 'hook';
+    protected ?string $object = 'hook';
 }

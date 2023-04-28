@@ -14,5 +14,5 @@ class Reference extends ObjectBase
 
     protected string $to_item_id;
 
-    protected string $object = 'reference';
+    protected ?string $object = 'reference';
 }

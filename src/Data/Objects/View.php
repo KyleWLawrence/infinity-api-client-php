@@ -24,7 +24,7 @@ class View extends ObjectBase
 
     protected array $update_vars = ['name', 'folder_id', 'settings', 'type', 'sort_order'];
 
-    protected string $object = 'folderview';
+    protected ?string $object = 'folderview';
 
     protected string $obj_name = 'view';
 

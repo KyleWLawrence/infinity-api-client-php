@@ -8,5 +8,5 @@ class Board extends ObjectBase
 
     protected array $update_vars = ['name', 'description', 'color', 'user_ids'];
 
-    protected string $object = 'board';
+    protected ?string $object = 'board';
 }

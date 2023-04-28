@@ -22,7 +22,7 @@ class Attribute extends ObjectBase
 
     protected array $update_vars = ['name', 'default_data', 'settings', 'type', 'sort_order'];
 
-    protected string $object = 'attribute';
+    protected ?string $object = 'attribute';
 
     protected array $folders;
 

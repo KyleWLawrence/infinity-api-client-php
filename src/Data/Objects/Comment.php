@@ -12,5 +12,5 @@ class Comment extends ObjectBase
 
     protected array $update_vars = ['text', 'parent_id'];
 
-    protected string $object = 'comment';
+    protected ?string $object = 'comment';
 }
