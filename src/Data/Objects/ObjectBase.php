@@ -18,7 +18,7 @@ class ObjectBase
 
     protected ?string $id = null;
 
-    protected string $object;
+    protected ?string $object;
 
     protected ?int $created_by = null;
 
