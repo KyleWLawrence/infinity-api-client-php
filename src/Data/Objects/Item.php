@@ -295,7 +295,8 @@ class Item extends ObjectBase
             $attsUsed[] = $val->attribute_id;
 
             if ($options['label_names'] === true && $val->attribute->type === 'label') {
-                $list[$key] = array_values($val->getLabelNames($val->getData()));
+                $data = $val->getLabelNames($data);
+                $list[$key] = array_values($data);
             } else {
                 $list[$key] = $val->getData();
             }
