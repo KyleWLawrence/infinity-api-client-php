@@ -180,6 +180,7 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
             $keys = $this->getColumn('name');
             $ids = $this->getColumn('id');
             $list = array_combine($keys, $ids);
+            ksort($list);
         }
 
         return $list;
