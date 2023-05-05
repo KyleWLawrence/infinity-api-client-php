@@ -20,13 +20,14 @@ trait ProcessReturn
             $params = $this->getAdditionalRouteParams();
             $bid = (isset($params['board_id'])) ? $params['board_id'] : null;
             $atts = (isset($this->atts[$bid])) ? $this->atts[$bid] : null;
+            $item_id = (isset($params['item_id'])) ? $params['item_id'] : null;
 
             if ($type === 'list') {
                 $data->$key = conv_inf_list($data->$key, $this->objectName, $bid, $atts);
 
                 return $data;
             } else {
-                return conv_inf_obj($data, $bid, $atts);
+                return conv_inf_obj($data, $bid, $atts, $item_id);
             }
         } else {
             $this->skipConvObj = false;

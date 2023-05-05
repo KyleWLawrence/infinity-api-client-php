@@ -22,14 +22,14 @@ if (! function_exists('conv_inf_obj')) {
     /**
      * @return Infinity\Data\Objects\ObjectBase
      */
-    function conv_inf_obj(object $obj, ?string $boardId = null, null|object|array $atts = null): object
+    function conv_inf_obj(object $obj, ?string $boardId = null, null|object|array $atts = null, ?string $item_id = null): object
     {
         if (isset($obj->deleted) && $obj->deleted === true) {
             throw new DeletedObjectException("Obj ({$obj->id}) is deleted");
         }
 
         if (function_exists('conv_laravel_inf_list')) {
-            return conv_laravel_inf_obj($obj, $boardId, $atts);
+            return conv_laravel_inf_obj($obj, $boardId, $atts, $item_id);
         }
 
         $obj = match ($obj->object) {
@@ -38,7 +38,7 @@ if (! function_exists('conv_inf_obj')) {
                 default => new Attribute($obj, $boardId),
             },
             'board' => new Board($obj),
-            'comment' => new Comment($obj, $boardId),
+            'comment' => new Comment($obj, $boardId, $item_id),
             'folder' => new Folder($obj, $boardId),
             'hook' => new Hook($obj, $boardId),
             'item' => new Item($obj, $boardId, $atts),
