@@ -91,7 +91,11 @@ class ObjectBase
     public function __get($key)
     {
         if (in_array($key, $this->getKeys())) {
-            return (isset($this->$key)) ? $this->$key : null;
+            if (isset($this->$key)) {
+                return (is_object($this->$key)) ? clone $this->$key : $this->$key;
+            } else {
+                return null;
+            }
         }
     }
 
@@ -131,7 +135,7 @@ class ObjectBase
 
     protected function resetObjectVars(object $apiObject): void
     {
-        $this->apiObject = $apiObject;
+        $this->apiObject = clone $apiObject;
         $this->setObjectVars($apiObject);
     }
 

@@ -8,7 +8,18 @@ trait Settings
 
     public function getSettings(): object
     {
-        return $this->settings;
+        $settings = clone $this->settings;
+
+        if (isset($this->settings->attributes) && ! empty($this->settings->attributes) && is_object($this->settings->attributes[0])) {
+            $atts = [];
+            foreach ($this->settings->attributes as $key => $att) {
+                $atts[$key] = clone $att;
+            }
+
+            $settings->attributes = $atts;
+        }
+
+        return $settings;
     }
 
     public function setAllSettings($val): object
@@ -28,7 +39,7 @@ trait Settings
     public function setSetting(string $key, $val): object
     {
         if ($this->settings->$key !== $val) {
-            $this->$key = $val;
+            $this->settings->$key = $val;
             $this->updated = true;
         }
 
