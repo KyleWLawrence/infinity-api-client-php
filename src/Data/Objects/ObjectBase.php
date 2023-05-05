@@ -165,6 +165,13 @@ class ObjectBase
         return $this;
     }
 
+    public function setUpdated(): object
+    {
+        $this->updated = true;
+
+        return $this;
+    }
+
     public function generateId(): string
     {
         return Uuid::uuid4()->toString();
