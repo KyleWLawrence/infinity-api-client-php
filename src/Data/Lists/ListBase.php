@@ -172,9 +172,14 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
         return $this->collect($dupes);
     }
 
-    public function list(): array
+    public function list(?string $key = null): array
     {
-        if ($this->name_key === null) {
+        if ($key) {
+            $keys = $this->getColumn($key);
+            $ids = $this->getColumn('id');
+            $list = array_combine($keys, $ids);
+            ksort($list);
+        } elseif ($this->name_key === null) {
             $list = $this->getColumn('id');
         } else {
             $keys = $this->getColumn('name');
