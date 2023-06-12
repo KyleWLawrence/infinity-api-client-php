@@ -175,9 +175,9 @@ class ListBase implements ArrayAccess, IteratorAggregate, Countable
     public function list(?string $key = null): array
     {
         if ($key) {
-            $keys = $this->getColumn($key);
-            $ids = $this->getColumn('id');
-            $list = array_combine($keys, $ids);
+            $keys = $this->getColumn('id');
+            $vals = $this->getColumn($key);
+            $list = array_combine($keys, $vals);
             ksort($list);
         } elseif ($this->name_key === null) {
             $list = $this->getColumn('id');
