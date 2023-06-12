@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KyleWLawrence\Infinity\Api\Resources\Core;
 
 use KyleWLawrence\Infinity\Api\Exceptions\CustomException;
