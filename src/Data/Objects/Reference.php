@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KyleWLawrence\Infinity\Data\Objects;
 
 class Reference extends ObjectBase

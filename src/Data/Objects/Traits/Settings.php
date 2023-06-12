@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KyleWLawrence\Infinity\Data\Objects\Traits;
 
 trait Settings

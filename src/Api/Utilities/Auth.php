@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace KyleWLawrence\Infinity\Api\Utilities;
 
 use KyleWLawrence\Infinity\Api\Exceptions\AuthException;

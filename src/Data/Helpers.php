@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use KyleWLawrence\Infinity\Data\Exceptions\DeletedObjectException;
 use KyleWLawrence\Infinity\Data\Lists\Attributes;
 use KyleWLawrence\Infinity\Data\Lists\Folders;
