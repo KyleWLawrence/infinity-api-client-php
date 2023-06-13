@@ -106,6 +106,6 @@ class Http
 
         //$client->setSideload(null);
 
-        return json_decode($response->getBody());
+        return json_decode((string) $response->getBody());
     }
 }
