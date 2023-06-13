@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace KyleWLawrence\Infinity\Api;
 
 /*
@@ -138,7 +136,7 @@ class HttpClient
     /**
      * Returns the supplied subdomain
      */
-    public function getWorkspace(): string
+    public function getWorkspace(): int
     {
         return $this->workspace;
     }
