@@ -81,7 +81,7 @@ class Http
         if (! empty($options['queryParams'])) {
             foreach ($options['queryParams'] as $queryKey => $queryValue) {
                 $uri = $request->getUri();
-                $uri = $uri->withQueryValue($uri, $queryKey, $queryValue);
+                $uri = $uri->withQueryValue($uri, $queryKey, (string) $queryValue);
                 $request = $request->withUri($uri, true);
             }
         }
