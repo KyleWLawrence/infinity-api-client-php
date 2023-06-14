@@ -22,7 +22,7 @@ class ValueBase
 
     public object $attribute;
 
-    protected string|array|bool|null $data;
+    protected string|array|bool|null|int $data;
 
     protected bool $updated = false;
 
