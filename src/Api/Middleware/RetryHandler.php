@@ -39,7 +39,7 @@ class RetryHandler
      *
      * @return callable
      */
-    public function shouldRetryRequest()
+    public function shouldRetryRequest(): callable
     {
         return function ($retries, Request $request, $response, $exception) {
             if ($retries >= $this->options['max']) {
@@ -59,7 +59,7 @@ class RetryHandler
      *
      * @return callable
      */
-    public function delay()
+    public function delay(): callable
     {
         return function ($retries) {
             $current_interval = $this->options['interval'] * pow($this->options['backoff_factor'], $retries);
@@ -75,7 +75,7 @@ class RetryHandler
      * @param  callable  $handler
      * @return RetryMiddleware
      */
-    public function __invoke(callable $handler)
+    public function __invoke(callable $handler): RetryMiddleware
     {
         $retryMiddleware = new RetryMiddleware($this->shouldRetryRequest(), $handler, $this->delay());
 
@@ -88,18 +88,18 @@ class RetryHandler
      * @param $exception
      * @return bool
      */
-    private function isRetryableException($exception)
+    private function isRetryableException(?\Throwable $exception): bool
     {
-        if (! $this->options['exceptions']) {
-            return true;
+        if (!$exception || !$this->options['exceptions']) {
+            return false;
         }
-
+    
         foreach ($this->options['exceptions'] as $expectedException) {
             if ($exception instanceof $expectedException) {
                 return true;
             }
         }
-
+    
         return false;
     }
 }
