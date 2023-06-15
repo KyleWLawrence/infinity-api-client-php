@@ -10,7 +10,7 @@ class Attribute extends ObjectBase
 {
     use Settings;
 
-    protected string|bool|array|int|null $default_data = null;
+    protected mixed $default_data = null;
 
     protected string $name;
 
