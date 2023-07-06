@@ -14,11 +14,11 @@ class AttributeLabel extends Attribute
         protected object $apiObject,
         protected ?string $board_id,
     ) {
+        $apiObject->settings->labels = (array) $apiObject->settings->labels;
         parent::__construct($apiObject, $board_id);
 
-        $labels = (array) $this->settings->labels;
-        $ids = array_column($labels, 'id');
-        $names = array_column($labels, 'name');
+        $ids = array_column($apiObject->settings->labels, 'id');
+        $names = array_column($apiObject->settings->labels, 'name');
         $this->label_map = array_combine($ids, $names);
     }
 
