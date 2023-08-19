@@ -133,7 +133,10 @@ class ValueBase
     {
         if ($this->$key !== $val) {
             $this->$key = $val;
-            $this->updated = true;
+
+            if ( ! empty($this->$key) || $this->attribute->default_data !== $val ) {
+                $this->updated = true;
+            }
         }
 
         return $this;
