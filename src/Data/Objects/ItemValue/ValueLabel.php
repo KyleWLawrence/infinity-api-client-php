@@ -146,6 +146,17 @@ class ValueLabel extends ValueBase
         return $this;
     }
 
+    public function shouldLabelName(string $name, bool $should, ?object &$att = null): object
+    {
+        if ( $should ) {
+            $this->addLabelName($name, $att);
+        } else {
+            $this->removeLabelName($name, $att);
+        }
+
+        return $this;
+    }
+
     public function setLabelName(?string $name, ?object &$att = null): object
     {
         $id = (! $name) ? null : $this->getLabelId($name, true, $att);
