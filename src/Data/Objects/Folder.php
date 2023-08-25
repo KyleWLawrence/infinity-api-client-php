@@ -18,7 +18,7 @@ class Folder extends ObjectBase
 
     protected string $name;
 
-    protected ?float $sort_order = 0.0;
+    protected string|float|null $sort_order = 0.0;
 
     protected object $settings;
 

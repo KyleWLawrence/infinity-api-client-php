@@ -18,7 +18,7 @@ class View extends ObjectBase
 
     protected string $type;
 
-    protected ?float $sort_order = 0.0;
+    protected float|null|string $sort_order = 0.0;
 
     protected ?string $parent_id = null;
 
