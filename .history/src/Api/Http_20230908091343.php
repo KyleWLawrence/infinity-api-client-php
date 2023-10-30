@@ -20,6 +20,22 @@ class Http
     public static $curl;
 
     /**
+     * Use the send method to call every endpoint
+     *
+     * @param  HttpClient  $client
+     * @param  string  $endPoint E.g. "/tickets.json"
+     * @param  array  $options
+     *                             Available options are listed below:
+     *                             array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
+     *                             array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
+     *                             string $method "GET", "POST", etc. Default is GET.
+     *                             string $contentType Default is "application/json"
+     * @return \stdClass | null The response body, parsed from JSON into an object. Also returns null if something went wrong
+     *
+     * @throws ApiResponseException
+     * @throws AuthException
+     */
+    /**
      * The function sends an HTTP request using the specified HTTP client and options,
      * and returns the response body as a JSON-decoded object.
      *

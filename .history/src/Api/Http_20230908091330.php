@@ -15,22 +15,27 @@ use Psr\Http\Message\StreamInterface;
 /**
  * HTTP functions via curl
  */
+/* The Http class is a static class that provides a method for sending HTTP requests
+with various options and returns the response body parsed from JSON into an object. */
 class Http
 {
     public static $curl;
 
     /**
-     * The function sends an HTTP request using the specified HTTP client and options,
-     * and returns the response body as a JSON-decoded object.
+     * Use the send method to call every endpoint
      *
-     * @param HttpClient client An instance of the HttpClient class.
-     * @param endPoint The `endPoint` parameter is a string that represents the specific
-     * endpoint or URL path that you want to send the HTTP request to. It is appended to
-     * the base URL of the API.
-     * @param options The `options` parameter is an array that allows you to customize
-     * the behavior of the `send` method. It has the following keys:
+     * @param  HttpClient  $client
+     * @param  string  $endPoint E.g. "/tickets.json"
+     * @param  array  $options
+     *                             Available options are listed below:
+     *                             array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
+     *                             array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
+     *                             string $method "GET", "POST", etc. Default is GET.
+     *                             string $contentType Default is "application/json"
+     * @return \stdClass | null The response body, parsed from JSON into an object. Also returns null if something went wrong
      *
-     * @return the response body as a JSON-decoded object.
+     * @throws ApiResponseException
+     * @throws AuthException
      */
     public static function send(
         HttpClient $client,

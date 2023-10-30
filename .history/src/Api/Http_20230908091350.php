@@ -19,6 +19,7 @@ class Http
 {
     public static $curl;
 
+
     /**
      * The function sends an HTTP request using the specified HTTP client and options,
      * and returns the response body as a JSON-decoded object.
