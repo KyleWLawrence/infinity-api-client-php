@@ -18,7 +18,7 @@ class ObjectBase
 
     protected array $update_vars = [];
 
-    protected ?string $id = null;
+    protected null|int|string $id = null;
 
     protected ?string $object;
 
